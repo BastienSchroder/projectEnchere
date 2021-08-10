@@ -1,0 +1,25 @@
+.logo{
+	margin : 15px;
+}
+.list-title{
+	color : #2a284f !important;
+	font-weight: bold !important;
+	padding : 10px !important;
+}
+.body{
+	background-color :#ded8d8;
+	padding :15px !important;
+}
+.row-spacing{
+	margin-top : 10px!important;
+}
+.box-shadow{
+	 box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	
+}
+.margin-div{
+	margin :3%!important;
+	background-color : #ececed;
+	padding : 50px;
+	flex-shrink : unset!important;
+}
