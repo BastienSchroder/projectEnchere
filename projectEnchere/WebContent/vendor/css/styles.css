@@ -1,3 +1,4 @@
+<!-- Accueil -->
 .logo{
 	margin : 15px;
 }
@@ -26,3 +27,10 @@
 .margin-check{
 	margin-left : 20px!important;
 }
+
+<!-- Connexion -->
+#divForm{
+	margin-top : 200px;
+}
+
+
