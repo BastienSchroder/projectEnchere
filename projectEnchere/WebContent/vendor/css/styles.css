@@ -24,14 +24,13 @@
 	padding : 50px;
 	flex-shrink : unset!important;
 }
-
+.margin-check{
+	margin-left : 20px!important;
+}
 
 <!-- Connexion -->
 #divForm{
 	margin-top : 200px;
 }
-
-
-
 
 
