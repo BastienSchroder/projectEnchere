@@ -1,3 +1,4 @@
+<!-- Accueil -->
 .logo{
 	margin : 15px;
 }
@@ -23,3 +24,14 @@
 	padding : 50px;
 	flex-shrink : unset!important;
 }
+
+
+<!-- Connexion -->
+#divForm{
+	margin-top : 200px;
+}
+
+
+
+
+
