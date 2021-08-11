@@ -20,7 +20,8 @@ public class JdbcTools {
 		System.out.println("passworddb=" + passworddb);
 	}
 	
-	public static Connection getConnection() throws SQLException {
+	public static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");   
 		Connection connexion = DriverManager.getConnection(urldb, userdb, passworddb);
 		return connexion;
 	}

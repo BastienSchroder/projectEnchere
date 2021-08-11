@@ -10,7 +10,7 @@
 <body>
 <h1 class="mb-5">ENI-ENCHERE - Page inscription </h1>
 <h2 class="text-center mb-5">Création du profil</h2>
-<form class="container row text-center">
+<form class="container row text-center" action="<%= request.getContextPath()%>/inscription" method="POST">
 	<div class="col">
 		<div class="mb-3">
 			<label for="pseudo">Pseudo : </label>
@@ -26,7 +26,7 @@
 		</div>
 		<div class="mb-3">
 			<label for="cp">Code postale : </label>
-			<input type="text" name="cp" id="cp" pattern="[0-9]" maxlength="5" placeholder="99999">
+			<input type="number" name="cp" id="cp" pattern="[0-9]" maxlength="5" placeholder="99999">
 		</div>
 		<div class="mb-3">
 			<label for="mdp">Mot de passe : </label>
@@ -41,7 +41,7 @@
 	</div>
 		<div class="mb-3">
 			<label for="email">E-mail : </label>
-			<input type="'email" name="email" id="email" placeholder="exemple@email.com">
+			<input type="email" name="email" id="email" placeholder="exemple@email.com">
 		</div>
 		<div class="mb-3">
 			<label for="rue">Rue : </label>

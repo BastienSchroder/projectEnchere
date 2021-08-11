@@ -8,14 +8,14 @@ import dal.EnchereDAO;
 
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 	
-	private static final String INSERT = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur) values(?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur) values(?,?,?,?,?,?,?,?,?,?,?)";
 	@Override
 	public void insertUtilisateur(Utilisateur utilisateur) {
 		Connection cnx = null;
 		try {
 			cnx = JdbcTools.getConnection();
 			cnx.setAutoCommit(false);
-			PreparedStatement rqt = cnx.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement rqt = cnx.prepareStatement(INSERT_UTILISATEUR, PreparedStatement.RETURN_GENERATED_KEYS);
 			rqt.setString(1,utilisateur.getPseudo());
 			rqt.setString(2,utilisateur.getNom());
 			rqt.setString(3,utilisateur.getPrenom());
