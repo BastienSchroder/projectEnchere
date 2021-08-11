@@ -2,55 +2,25 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	  <!-- Custom styles for this template -->
-	  
-    <link href="./vendor/css/styles.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>ENI-Enchère</title>
+ <%@include file="require/head.jsp" %>
 </head>
 <body>
-<div class="row header">
-	<div class="col-3"><img class="logo"
-     src="./vendor/img/logo.png"
-     alt="Le logo de la hess">
-	</div>
-	<div class="col align-items-right">
-		<ul class="nav justify-content-end align-middle">
-			  <li class="nav-item">
-			    <a class="nav-link active" aria-current="page" href="#">Enchères</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link active" aria-current="page" href="/projectEnchere/connexion">Connexion</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link active" aria-current="page" href="/projectEnchere/inscription">Inscription</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link" href="#">Vendre un article</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link" href="#">Mon profil</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Déconnexion</a>
-			  </li>
-		</ul>
-	</div>	
-</div>
+
+ <%@include file="require/header.jsp" %>
 <div class="row body">
 	<h2 class="text-center list-title h1">Liste des enchères</h2>
 	<div class=" row box-shadow margin-div">
 	
 		<div class="row">
 			<h2>Filtres : </h2>
-			<form class="d-flex col-6 col-sm-3 ">
+			<form class="d-flex col-6 col-sm-3 " action="<%= request.getContextPath()%>/accueil" method="POST">
 			      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 			      <button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
 		</div>
 		<br/>
+		<form action="<%= request.getContextPath()%>/accueil" method="POST">
 		<div class="row  mt-3">
 			<div class="col-6 col-sm-1">
 				<p>Catégorie </p>
@@ -126,6 +96,7 @@
 			<div class="col">
 			</div>
 		</div>
+		</form>
 		<div class="row mt-5">
 			<div class="card mb-3" style="max-width: 540px;">
 			  <div class="row no-gutters">
