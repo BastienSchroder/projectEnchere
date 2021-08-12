@@ -1,14 +1,25 @@
 <!-- Accueil -->
-.logo{
-	margin : 15px;
+
+.hh{
+	background-color:#484848 !important;
+}
+.logo-page{
+	margin : 15px !important;
 }
 .list-title{
-	color : #2a284f !important;
+	color :  #ded8d8!important;
 	font-weight: bold !important;
 	padding : 10px !important;
 }
+.header{
+	background-color:#e8e8e8 !important;
+	 box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)!important;
+}
+body{
+	background-color :#2a284f;
+}
 .body{
-	background-color :#ded8d8;
+	background-color :#2a284f;
 	padding :15px !important;
 }
 .row-spacing{
@@ -30,7 +41,7 @@
 
 <!-- Connexion -->
 #divForm{
-	margin-top : 200px;
+	
 }
 
 

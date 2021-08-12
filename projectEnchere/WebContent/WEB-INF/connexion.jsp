@@ -3,14 +3,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+ <%@include file="require/head.jsp" %>
 	  <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="./vendor/css/styles.css">
 </head>
 
 <body>
-
-	<div class="d-flex justify-content-center align-items-center container" style="margin-top:280px;">
+<%@include file="require/header.jsp" %>
+<div class="row body">
+	<h2 class="text-center list-title h1">Profil</h2>
+	<div class=" row box-shadow margin-div">
+	<div class="d-flex justify-content-center align-items-center container" >
 	<form action="" method="POST" >
 	<div class="row">
 		<div class="mb-3">
@@ -41,6 +45,8 @@
 			<input type="submit" name="creerCompte" class="btn btn-outline-secondary btn-lg" value="Créer un compte">
 		</div>
 	</form>
+</div>
+</div>
 </div>
 </body>
 </html>

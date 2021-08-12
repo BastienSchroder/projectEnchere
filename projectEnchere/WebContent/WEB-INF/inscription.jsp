@@ -3,12 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+ 	<%@include file="require/head.jsp" %>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 	<title>Page Inscription</title>
 </head>
 <body>
-<h1 class="mb-5">ENI-ENCHERE - Page inscription </h1>
+ <%@include file="require/header.jsp" %>
+ <div class="row body">
+	<h2 class="text-center list-title h1">Page inscription</h2>
+	<div class=" row box-shadow margin-div">
+
 <h2 class="text-center mb-5">Création du profil</h2>
 <form class="container row text-center" action="<%= request.getContextPath()%>/inscription" method="POST">
 	<div class="col">
@@ -67,7 +72,8 @@
 	</div>
 	
 	
-	
+</div>
+</div>	
 </form>
 </body>
 </html>
