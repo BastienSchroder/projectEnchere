@@ -39,6 +39,25 @@ body{
 	margin-left : 20px!important;
 }
 
+.retrait{
+	border : 0.5px solid #a7a7a7;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)!important;
+	padding :20px;
+}
+.single-enchere{
+	border : 0.5px solid #a7a7a7;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)!important;
+	margin : 3px;
+}
+.tip-box{
+	border : 0.5px solid #a7a7a7;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)!important;
+	padding :20px;
+	background-color : #b2bbdc
+}
+.padding-new-vente{
+	padding-left : 100px
+}
 <!-- Connexion -->
 #divForm{
 	

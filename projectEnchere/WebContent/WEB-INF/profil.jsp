@@ -14,7 +14,7 @@
 <div class="row body">
 	<h2 class="text-center list-title h1">Profil</h2>
 	<div class=" row box-shadow margin-div">
-	<div class="col text-center">
+	<div  class="col text-center">
 		<ul class="list-unstyled">
 			  <li class="mb-2"><b>Pseudo :</b> <%= u1.getPseudo() %></li>
 			  <li class="mb-2"><b>Nom :</b> <%= u1.getNom() %></li>

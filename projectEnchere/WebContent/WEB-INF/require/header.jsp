@@ -18,7 +18,7 @@
 			    <a class="nav-link active" aria-current="page" href="/projectEnchere/profil">Mon profil</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link" href="#">Vendre un article</a>
+			    <a class="nav-link" href="/projectEnchere/new-vente">Vendre un article</a>
 			  </li>
 			  <li class="nav-item">
 			    <a class="nav-link" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
