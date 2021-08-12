@@ -21,7 +21,7 @@
 			    <a class="nav-link" href="#">Vendre un article</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Déconnexion</a>
+			    <a class="nav-link" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
 			  </li>
 		</ul>
 	</div>	

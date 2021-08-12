@@ -19,5 +19,9 @@ public class EnchereManager {
 	public Utilisateur selectUtilisateur(int noUtilisateur) {
 		return this.enchereDAO.selectUtilisateur(noUtilisateur);
 	}
+	
+	public Utilisateur selectConnexion(String identifiant, String mdp) {
+		return this.enchereDAO.selectConnexion(identifiant, mdp);
+	}
 
 }

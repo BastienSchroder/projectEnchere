@@ -10,21 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bll.EnchereManager;
-import bo.Utilisateur;
-import dal.EnchereDAO;
-
 /**
- * Servlet implementation class ProfilServlet
+ * Servlet implementation class DeconnexionServlet
  */
-@WebServlet("/profil")
-public class ProfilServlet extends HttpServlet {
+@WebServlet("/deconnexion")
+public class DeconnexionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProfilServlet() {
+    public DeconnexionServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,31 +29,21 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		EnchereManager mgr = new EnchereManager();
+		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		int noUtilisateur = -1;
-		if(session.getAttribute("noUtilisateur") != null) {
-			noUtilisateur = (int) session.getAttribute("noUtilisateur");
-		}else {	
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
-			if (rd!=null) {
-				rd.forward(request, response);
-			}	
-		}
-		Utilisateur u1 = mgr.selectUtilisateur(noUtilisateur);
-		request.setAttribute("user1", u1);		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
-		if (rd!=null) {
+		session.setAttribute("noUtilisateur", null);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+		if (rd != null) {
 			rd.forward(request, response);
-		}	
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 
-		doGet(request, response);
 	}
 
 }
