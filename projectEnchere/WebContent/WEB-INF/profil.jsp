@@ -15,17 +15,22 @@
 	<h2 class="text-center list-title h1">Profil</h2>
 	<div class=" row box-shadow margin-div">
 	<div class="col text-center">
+	<form action="<%= request.getContextPath()%>/profil" method="post">
 		<ul class="list-unstyled">
-			  <li class="mb-2"><b>Pseudo :</b> <%= u1.getPseudo() %></li>
-			  <li class="mb-2"><b>Nom :</b> <%= u1.getNom() %></li>
-			  <li class="mb-2"><b>Prénom :</b> <%= u1.getPrenom() %> </li>
-			  <li class="mb-2"><b>Email :</b><%= u1.getEmail() %></li>
-			  <li class="mb-2"><b>Portable :</b> <%= u1.getTelephone() %></li>
-			  <li class="mb-2"><b>Rue :</b> <%= u1.getRue() %></li>
-			  <li class="mb-2"><b>Code postal :</b> <%= u1.getCodePostal() %></li>
-			  <li class="mb-2"><b>Ville :</b> <%= u1.getVille()%></li>
+			  <li class="mb-2"><b>Pseudo :</b> <input type="text" value="<%= u1.getPseudo() %>" name="pseudo"></li>
+			  <li class="mb-2"><b>Nom :</b><input type="text" value="<%= u1.getNom() %>" name="nom"></li>
+			  <li class="mb-2"><b>Prénom :</b><input type="text" value="<%= u1.getPrenom() %>" name="prenom"></li>
+			  <li class="mb-2"><b>Email :</b><input type="text" value="<%= u1.getEmail() %>" name="email"></li>
+			  <li class="mb-2"><b>Portable :</b><input type="text" value="<%= u1.getTelephone() %>" name="tel"></li>
+			  <li class="mb-2"><b>Rue :</b><input type="text" value="<%= u1.getRue() %>" name="rue"></li>
+			  <li class="mb-2"><b>Code postal :</b><input type="text" value="<%= u1.getCodePostal() %>" name="cp"></li>
+			  <li class="mb-2"><b>Ville :</b><input type="text" value="<%= u1.getVille() %>" name="ville"></li>
+			  <li class="mb-2"><b>Mot de passe :</b><input type="text" value="<%= u1.getMotDePasse() %>" name="mdp"></li>
 		</ul>
+		<button class="btn btn-primary" type="submit">Modifier</button>
+	</form>
 	</div>
+	
 	
 </div>
 </div>

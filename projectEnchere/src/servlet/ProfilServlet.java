@@ -56,7 +56,29 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		EnchereManager mgr = new EnchereManager();
+		
+		int noUtilisateur = 1;
+		
+		
+		
+		Utilisateur u2 = new Utilisateur(
+				noUtilisateur,
+				request.getParameter("pseudo"),
+				request.getParameter("nom"),
+				request.getParameter("prenom"),
+				request.getParameter("email"),
+				request.getParameter("tel"),
+				request.getParameter("rue"),
+				request.getParameter("cp"),
+				request.getParameter("ville"),
+				request.getParameter("mdp"),
+				0,
+				false
+				);
+		System.out.println(u2);
+		mgr.updateUtilisateur(u2);
+		
 		doGet(request, response);
 	}
 

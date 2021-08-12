@@ -12,16 +12,21 @@ public class EnchereManager {
 		this.enchereDAO = DAOFactory.getEnchereDAO();
 	}
 	
-	public void insertUtilisateur(Utilisateur utilisateur) {
-		this.enchereDAO.insertUtilisateur(utilisateur);
+	public int insertUtilisateur(Utilisateur utilisateur) {
+		return this.enchereDAO.insertUtilisateur(utilisateur);
 	}
 	
 	public Utilisateur selectUtilisateur(int noUtilisateur) {
 		return this.enchereDAO.selectUtilisateur(noUtilisateur);
 	}
 	
+<<<<<<< Updated upstream
 	public Utilisateur selectConnexion(String identifiant, String mdp) {
 		return this.enchereDAO.selectConnexion(identifiant, mdp);
+=======
+	public void updateUtilisateur(Utilisateur utilisateur) {
+		this.enchereDAO.updateUtilisateur(utilisateur);
+>>>>>>> Stashed changes
 	}
 
 }
