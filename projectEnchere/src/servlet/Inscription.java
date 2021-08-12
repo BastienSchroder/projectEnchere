@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bll.EnchereManager;
+import bo.Utilisateur;
+
 /**
  * Servlet implementation class Inscription
  */
@@ -38,7 +41,17 @@ public class Inscription extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		Utilisateur u1 = new Utilisateur(request.getParameter("pseudo"),request.getParameter("nom"),request.getParameter("prenom"),request.getParameter("email"),request.getParameter("telephone"),request.getParameter("rue"),request.getParameter("cp"),request.getParameter("ville"),request.getParameter("mdp"),0,false);
+		u1.setNoUtilisateur(8);
+		System.out.println(u1);
+		EnchereManager mgr = new EnchereManager();
+		mgr.insertUtilisateur(u1);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/connexion.jsp");
+		if (rd != null) {
+			rd.forward(request, response);
+		}
 	}
 
 }
+

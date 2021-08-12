@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bll.EnchereManager;
+import bo.Utilisateur;
+import dal.EnchereDAO;
+
 /**
  * Servlet implementation class ProfilServlet
  */
@@ -28,19 +32,25 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		EnchereManager mgr = new EnchereManager();
+		int noUtilisateur = 1;
+		
+		Utilisateur u1 = mgr.selectUtilisateur(noUtilisateur);
+		request.setAttribute("user1", u1);
+		
+
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
 		if (rd!=null) {
 			rd.forward(request, response);
 		}	
-
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		doGet(request, response);
 	}
 

@@ -44,7 +44,6 @@
 		<div>
 			<input type="submit" name="creerCompte" class="btn btn-outline-secondary btn-lg" value="Créer un compte">
 		</div>
-	
 	</form>
 </div>
 </div>

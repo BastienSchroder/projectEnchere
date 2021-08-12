@@ -16,6 +16,8 @@ public class AppliTest {
 			e2.printStackTrace();
 		}
 		
+		Utilisateur u2 = e.selectUtilisateur(1);
+		System.out.println(u2);
 		
 		
 	}
