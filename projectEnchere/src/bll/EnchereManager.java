@@ -15,5 +15,9 @@ public class EnchereManager {
 	public void insertUtilisateur(Utilisateur utilisateur) {
 		this.enchereDAO.insertUtilisateur(utilisateur);
 	}
+	
+	public Utilisateur selectUtilisateur(int noUtilisateur) {
+		return this.enchereDAO.selectUtilisateur(noUtilisateur);
+	}
 
 }

@@ -2,6 +2,7 @@ package dal.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import bo.Utilisateur;
 import dal.EnchereDAO;
@@ -9,6 +10,7 @@ import dal.EnchereDAO;
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 	
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur) values(?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String SELECT_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE noUtilisateur=?";
 	@Override
 	public void insertUtilisateur(Utilisateur utilisateur) {
 		Connection cnx = null;
@@ -34,6 +36,37 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public Utilisateur selectUtilisateur(int noUtilisateur) {
+		Connection cnx = null;
+		Utilisateur user = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_UTILISATEUR);
+			rqt.setInt(1, noUtilisateur);
+			ResultSet rs = rqt.executeQuery();
+			//System.out.println(rs.wasNull());
+			if (rs.next()) {
+				user = new Utilisateur(noUtilisateur, rs.getString("pseudo"),rs.getString("nom"),rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"),rs.getString("rue"), rs.getString("codePostal"), rs.getString("ville"), rs.getString("motDePasse"), rs.getInt("credit"), rs.getBoolean("administrateur"));
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return user;
 	}
 
 

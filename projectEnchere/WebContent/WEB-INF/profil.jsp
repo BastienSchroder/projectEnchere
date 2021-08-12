@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="bo.Utilisateur"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,19 +10,20 @@
 </head>
 <body>
 <%@include file="require/header.jsp" %>
+<%Utilisateur u1 = (Utilisateur)request.getAttribute("user1"); %>
 <div class="row body">
 	<h2 class="text-center list-title h1">Profil</h2>
 	<div class=" row box-shadow margin-div">
 	<div class="col text-center">
 		<ul class="list-unstyled">
-			  <li class="mb-2"><b>Pseudo :</b> Frédo la terreur</li>
-			  <li class="mb-2"><b>Nom :</b> Cassoulet</li>
-			  <li class="mb-2"><b>Prénom :</b> Frédérick</li>
-			  <li class="mb-2"><b>Email :</b> xxx.extra.bg.xx@live.fr</li>
-			  <li class="mb-2"><b>Portable :</b> 0679586851</li>
-			  <li class="mb-2"><b>Rue :</b> 124 Avenue du GOULAG</li>
-			  <li class="mb-2"><b>Code postal :</b> 10100</li>
-			  <li class="mb-2"><b>Ville :</b> Moscou</li>
+			  <li class="mb-2"><b>Pseudo :</b> <%= u1.getPseudo() %></li>
+			  <li class="mb-2"><b>Nom :</b> <%= u1.getNom() %></li>
+			  <li class="mb-2"><b>Prénom :</b> <%= u1.getPrenom() %> </li>
+			  <li class="mb-2"><b>Email :</b><%= u1.getEmail() %></li>
+			  <li class="mb-2"><b>Portable :</b> <%= u1.getTelephone() %></li>
+			  <li class="mb-2"><b>Rue :</b> <%= u1.getRue() %></li>
+			  <li class="mb-2"><b>Code postal :</b> <%= u1.getCodePostal() %></li>
+			  <li class="mb-2"><b>Ville :</b> <%= u1.getVille()%></li>
 		</ul>
 	</div>
 	
