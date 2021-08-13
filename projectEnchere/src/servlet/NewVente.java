@@ -114,14 +114,7 @@ public class NewVente extends HttpServlet {
 				request.getParameter("ville")			
 		);
 		mgr.insertRetrait(retrait);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("accueil");
-		if (rd != null) {
-			
-			rd.forward(request, response);
-			
-			
-		}
+		response.sendRedirect("/projectEnchere/accueil");
 		
 	}
 

@@ -21,17 +21,17 @@
 <div class="row body">
 	<h2 class="text-center list-title h1">Nouvelle ventes</h2>
 	<div class=" row box-shadow margin-div">
-	<div  class=" padding-new-vente col-7">
+	<div  class=" padding-new-vente col-sm-12 col-md-12 col-lg-7">
 		<form action="<%= request.getContextPath()%>/new-vente" method="POST">
-			  <div class="mb-3 col-3">
+			  <div class="mb-3 col-sm-12 col-md-12 col-lg-3">
 			    <label for="article-name" class="form-label">Nom de l'article</label>
 			    <input type="text" name="article-name" class="form-control" id="article-name" >
 			  </div>
-			  <div class="col-6 mb-3">
+			  <div class="col-sm-12 col-md-12 col-lg-5 mb-3">
 			    <label for="description" class="form-label">Description</label>
 			    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
 			  </div>
-			  <div class="mb-3 col-6 col-sm-3">
+			  <div class="mb-3 col-sm-12 col-md-12 col-lg-3">
 			  <label  class="form-label">Catégorie</label>
 				<select id="selectCategorie" name="selectCategorie" class="form-select" >
 			  		<option selected>-- Catégorie --</option>
@@ -50,29 +50,29 @@
 				</select>
 			</div>
 			
-			 <div class="col-2 mb-3">
+			 <div class=" col-sm-12 col-md-12 col-lg-2 mb-3">
 			    <label for="price" class="form-label">Mise à prix</label>
 			    <input type="number" name="price" class="form-control" id="price" >
 			  </div>
-			  <div class=" col-3 mb-3">
+			  <div class="  col-sm-12 col-md-12 col-lg-3 mb-3">
 			    <label for="datestart" class="form-label">Date de début de l'enchère</label>
 			    <input class="datepicker" name="datestart" type="text" id="datestart">
 			  </div>
-			  <div class=" col-3 mb-3">
+			  <div class=" col-sm-12 col-md-12 col-lg-3 mb-3">
 			    <label for="dateend" class="form-label">Date de fin de l'enchère</label>
 			    <input class="datepicker" name="dateend" type="text" id="dateend">
 			  </div>
-			  <div class="col-6 mb-3 retrait">
+			  <div class="col-sm-12 col-md-6 mb-3 retrait">
 			  <h4>Adresse de retrait :</h4>
-			  <div class=" col-3 mb-3">
+			  <div class=" col-sm-12 col-md-12 col-lg-4 mb-3">
 				    <label for="rue" class="form-label">Rue : </label>
 				    <input type="text" name="rue" class="form-control" id="rue" >
 			    </div>
-			    <div class=" col-3 mb-3">
+			    <div class=" col-sm-12 col-md-12 col-lg-4 mb-3">
 				    <label for="cp" class="form-label">Code postal : </label>
 				   <input type="number" name="cp" id="cp" pattern="[0-9]" maxlength="5" placeholder="99999">
 			   </div>
-			   <div class=" col-3 mb-3">
+			   <div class=" col-sm-12 col-md-12 col-lg-4 mb-3">
 				    <label for="ville" class="form-label">Ville : </label>
 				    <input type="text" class="form-control" name="ville" id="ville" >
 			    </div>

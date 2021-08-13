@@ -13,9 +13,11 @@
 <meta charset="ISO-8859-1">
 <title>ENI-Enchère</title>
  <%@include file="require/head.jsp" %>
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-
+<div class="testtt">
  <%@include file="require/header.jsp" %>
  <%ArrayList<Categorie> cl = (ArrayList<Categorie>)request.getAttribute("Categorie"); %>
 <div class="row body">
@@ -40,7 +42,7 @@
 			  		<option selected>-- Catégorie --</option>
 			  		<%for (int i = 0; i < cl.size(); i++) {
 			  		    Categorie categ = cl.get(i);
-			  		  %><option value="<%= categ.getLibelle()%>"><%= categ.getLibelle()%></option><%
+			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
 			  		    
 			  		}%> 
 				</select>
@@ -136,9 +138,14 @@
 	%>
 	</div>
     </div>
-
+    
+<button id="pouf" class="pouf">Run Effect</button>
+<button id="pif" class="pif">Run Effect</button>
+<button id="paf" class="paf">Run Effect</button>
+</div>
 </div>
 <script>
+
 $( "#ventes" ).on( "click", function() {
 	 if($('#ventes').is(':checked')){
 		 $("#sellInProgress").removeAttr('disabled');
@@ -163,7 +170,26 @@ $( "#achat" ).on( "click", function() {
 		
 	 }
 	});
-	
+
+
+$( function() {
+    $( "#pouf" ).on( "click", function() {
+    	 $( ".testtt" ).toggle( "fade", 500 );
+    });
+    $( "#paf" ).on( "click", function() {
+    	setInterval(function() {
+    		 $( ".testtt" ).effect( "shake", 300 );
+    	}, 70);
+   	
+   });
+    
+    $( "#pif" ).on( "click", function() {
+    	$( ".testtt" ).toggle( "explode",2000 );
+    	
+   	
+   });
+} );
+
 </script>
 </body>
 </html>
