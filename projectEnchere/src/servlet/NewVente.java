@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -91,6 +92,7 @@ public class NewVente extends HttpServlet {
 		 System.out.println(formater);*/
 		int prixBase = Integer.valueOf(request.getParameter("price"));
 		int noCateg = Integer.valueOf(request.getParameter("selectCategorie"));
+		HttpSession session = request.getSession();
 		ArticleVendu article = new ArticleVendu(
 				request.getParameter("article-name"),
 				request.getParameter("description"),
@@ -98,7 +100,7 @@ public class NewVente extends HttpServlet {
 				dateend,
 				prixBase,
 				false,
-				1,
+				(int) session.getAttribute("noUtilisateur"),
 				noCateg
 					
 		);
@@ -112,10 +114,15 @@ public class NewVente extends HttpServlet {
 				request.getParameter("ville")			
 		);
 		mgr.insertRetrait(retrait);
+		
 		RequestDispatcher rd = request.getRequestDispatcher("accueil");
 		if (rd != null) {
+			
 			rd.forward(request, response);
+			
+			
 		}
+		
 	}
 
 }

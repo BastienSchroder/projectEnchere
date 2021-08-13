@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bll.EnchereManager;
 import bo.Utilisateur;
@@ -33,14 +34,16 @@ public class ProfilServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EnchereManager mgr = new EnchereManager();
-		int noUtilisateur = 1;
+		HttpSession session = request.getSession();
+		RequestDispatcher rd = request.getRequestDispatcher("accueil");	
+		int noUtilisateur = -1;
+		if(session.getAttribute("noUtilisateur") != null) {
+			noUtilisateur = (int) session.getAttribute("noUtilisateur");
+			rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
+			Utilisateur u1 = mgr.selectUtilisateur(noUtilisateur);
+			request.setAttribute("user1", u1);
+		}
 		
-		Utilisateur u1 = mgr.selectUtilisateur(noUtilisateur);
-		request.setAttribute("user1", u1);
-		
-
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
 		if (rd!=null) {
 			rd.forward(request, response);
 		}	
@@ -50,8 +53,39 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		EnchereManager mgr = new EnchereManager();
+		HttpSession session = request.getSession();
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+		int noUtilisateur = -1;
 
-		doGet(request, response);
+		if(request.getParameter("supprimer") != null) {
+			mgr.deleteProfil((int) session.getAttribute("noUtilisateur"));
+			session.setAttribute("noUtilisateur", null);
+			rd.forward(request, response);
+
+		}else {
+			
+			Utilisateur u2 = new Utilisateur(
+					(int) session.getAttribute("noUtilisateur"),
+					request.getParameter("pseudo"),
+					request.getParameter("nom"),
+					request.getParameter("prenom"),
+					request.getParameter("email"),
+					request.getParameter("tel"),
+					request.getParameter("rue"),
+					request.getParameter("cp"),
+					request.getParameter("ville"),
+					request.getParameter("mdp"),
+					0,
+					false
+					);
+			
+			mgr.updateUtilisateur(u2);
+			doGet(request, response);
+		}		
+	
+		
+	
 	}
 
 }

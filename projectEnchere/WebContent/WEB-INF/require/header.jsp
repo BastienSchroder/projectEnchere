@@ -1,7 +1,7 @@
 <div class="row header">
-	<div class="col-3"><img class="logo-page"
+	<div class="col-3"><a href="<%= request.getContextPath()%>/accueil"><img class="logo-page"
      src="./vendor/img/logo.png"
-     alt="Le logo de la hess">
+     alt="Le logo de la hess" ></a>
 	</div>
 	<div class="col align-items-right">
 		<ul class="nav justify-content-end align-middle">
@@ -21,7 +21,10 @@
 			    <a class="nav-link" href="/projectEnchere/new-vente">Vendre un article</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Déconnexion</a>
+			    <a class="nav-link" href="/projectEnchere/detail-vente">Détail vente</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
 			  </li>
 		</ul>
 	</div>	

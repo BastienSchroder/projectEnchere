@@ -1,8 +1,12 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.ArrayList" %>
 <%@page import="bo.Categorie"%>
 <%@page import="java.util.Iterator"%>
+<%@ page import="java.util.List" %>
+<%@ page import="bo.ArticleVendu" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +45,7 @@
 			  		}%> 
 				</select>
 			</div>
-			
+
 		</div>
 		<div class="row">
 			<div class="col">
@@ -104,93 +108,35 @@
 		</div>
 		</form>
 		<div class="row mt-5">
-			<div class="card mb-3 single-enchere" style="max-width: 540px;">
-			  <div class="row no-gutters">
-			    <div class="col-md-4">
-			      <img src="./vendor/img/auction.png" class="card-img" alt="...">
-			    </div>
-			    <div class="col-md-8">
-			      <div class="card-body">
-			        <h5 class="card-title">Exemple enchere</h5>
-			        <p class="card-text">Teste pour l'enchère a remplacer plus tard</p>
-			        <p class="card-text"><small class="text-muted">Frédérick la terreur</small></p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			<div class="card mb-3 single-enchere" style="max-width: 540px;">
-			  <div class="row no-gutters">
-			    <div class="col-md-4">
-			      <img src="./vendor/img/auction.png" class="card-img" alt="...">
-			    </div>
-			    <div class="col-md-8">
-			      <div class="card-body">
-			        <h5 class="card-title">Exemple enchere</h5>
-			        <p class="card-text">Teste pour l'enchère a remplacer plus tard</p>
-			        <p class="card-text"><small class="text-muted">Frédérick la terreur</small></p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			<div class="card mb-3 single-enchere" style="max-width: 540px;">
-			  <div class="row no-gutters">
-			    <div class="col-md-4">
-			      <img src="./vendor/img/auction.png" class="card-img" alt="...">
-			    </div>
-			    <div class="col-md-8">
-			      <div class="card-body">
-			        <h5 class="card-title">Exemple enchere</h5>
-			        <p class="card-text">Teste pour l'enchère a remplacer plus tard</p>
-			        <p class="card-text"><small class="text-muted">Frédérick la terreur</small></p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			<div class="card mb-3 single-enchere" style="max-width: 540px;">
-			  <div class="row no-gutters">
-			    <div class="col-md-4">
-			      <img src="./vendor/img/auction.png" class="card-img" alt="...">
-			    </div>
-			    <div class="col-md-8">
-			      <div class="card-body">
-			        <h5 class="card-title">Exemple enchere</h5>
-			        <p class="card-text">Teste pour l'enchère a remplacer plus tard</p>
-			        <p class="card-text"><small class="text-muted">Frédérick la terreur</small></p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			<div class="card mb-3 single-enchere" style="max-width: 540px;">
-			  <div class="row no-gutters">
-			    <div class="col-md-4">
-			      <img src="./vendor/img/auction.png" class="card-img" alt="...">
-			    </div>
-			    <div class="col-md-8">
-			      <div class="card-body">
-			        <h5 class="card-title">Exemple enchere</h5>
-			        <p class="card-text">Prix : 3 Euro <br/> Fin de l'enchère : 06/08/2021</p>
-			        <p class="card-text"><small class="text-muted">Frédérick la terreur</small></p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-			<div class="card mb-3 single-enchere" style="max-width: 540px;">
-			  <div class="row no-gutters">
-			    <div class="col-md-4">
-			      <img src="./vendor/img/auction.png" class="card-img" alt="...">
-			    </div>
-			    <div class="col-md-8">
-			      <div class="card-body">
-			        <h5 class="card-title">Exemple enchere</h5>
-			        <p class="card-text">Teste pour l'enchère a remplacer plus tard</p>
-			        <p class="card-text"><small class="text-muted">Frédérick la terreur</small></p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		</div>
+		<%
+		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
+		for(ArticleVendu article : listeArticles){
+			if(!article.isEtatVente()){
+		%>
+		
+            <div class="card mb-3 single-enchere" style="max-width: 540px;">
+              <div class="row no-gutters">
+	                <div class="col-md-4">
+	                  <img src="./vendor/img/auction.png" class="card-img" alt="...">
+	                </div>
+	                	<div class="col-md-8">
+		                  <div class="card-body">
+		                    <h5 class="card-title"><%= article.getNomArticle() %></h5>
+		                    <p class="card-text">Prix : <%= article.getPrixInitiale()%></p>
+		                    <p class="card-text">Fin de l'enchère : <%= article.getDateFinEncheres()%></p> 
+		                    <p class="card-text"><small class="text-muted"><%= article.getPseudo()%></small></p>
+		                  </div>
+	              	  </div>
+               </div>
+            </div>
+        
+           	<%
+		}
+			}
+	%>
 	</div>
-	
+    </div>
+
 </div>
 <script>
 $( "#ventes" ).on( "click", function() {
