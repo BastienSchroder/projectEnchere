@@ -55,13 +55,14 @@ public class ProfilServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EnchereManager mgr = new EnchereManager();
 		HttpSession session = request.getSession();
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
 		int noUtilisateur = -1;
 
 		if(request.getParameter("supprimer") != null) {
 			mgr.deleteProfil((int) session.getAttribute("noUtilisateur"));
 			session.setAttribute("noUtilisateur", null);
-			rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+			rd.forward(request, response);
+
 		}else {
 			
 			Utilisateur u2 = new Utilisateur(
@@ -78,12 +79,13 @@ public class ProfilServlet extends HttpServlet {
 					0,
 					false
 					);
+			
 			mgr.updateUtilisateur(u2);
+			doGet(request, response);
 		}		
+	
 		
-		if (rd!=null) {
-			rd.forward(request, response);
-		}	
+	
 	}
 
 }
