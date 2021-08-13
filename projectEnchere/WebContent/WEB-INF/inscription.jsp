@@ -67,7 +67,7 @@
 			<button type="submit" class="btn btn-primary col-6">S'inscrire</button>
 		</div>
 		<div class="col text-start">
-			<button type="" class="btn btn-warning col-6">Annuler</button>
+			<a href="accueil" class="btn btn-warning col-6">Annuler</a>
 		</div>
 	</div>
 	
