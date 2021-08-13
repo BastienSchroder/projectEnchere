@@ -37,10 +37,7 @@
 			  		<option value="4">Babouche</option>
 				</select>
 			</div>
-			<%
-			List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");
-			
-			%>
+
 		</div>
 		<div class="row">
 			<div class="col">
@@ -102,9 +99,34 @@
 			</div>
 		</div>
 		</form>
+		<%
+		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
+		for(ArticleVendu article : listeArticles){
+			//if(article.isEtatVente()){
+		%>
+		<div class="row mt-5">
+            <div class="card mb-3 single-enchere" style="max-width: 540px;">
+              <div class="row no-gutters">
+	                <div class="col-md-4">
+	                  <img src="./vendor/img/auction.png" class="card-img" alt="...">
+	                </div>
+	                	<div class="col-md-8">
+		                  <div class="card-body">
+		                    <h5 class="card-title"><%= article.getNomArticle() %></h5>
+		                    <p class="card-text">Prix : <%= article.getPrixInitiale()%></p>
+		                    <p class="card-text">Fin de l'enchère : <%= article.getDateFinEncheres()%></p> 
+		                    <p class="card-text"><small class="text-muted"><%= article.getPseudo()%></small></p>
+		                  </div>
+	              	  </div>
+               </div>
+            </div>
+        </div>
+           	<%
+		//}
+			}
+	%>
+    </div>
 
-	</div>
-	
 </div>
 <script>
 $( "#ventes" ).on( "click", function() {

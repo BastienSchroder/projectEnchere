@@ -32,7 +32,7 @@ public class DeconnexionServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		session.setAttribute("noUtilisateur", null);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("accueil");
 		if (rd != null) {
 			rd.forward(request, response);
 		}

@@ -11,10 +11,10 @@ public class ArticleVendu {
 	private int prixInitiale;
 	private int prixVente;
 	private boolean etatVente;
-	
+	private String pseudo;
 	
 	public ArticleVendu(int noArticle, String nomArticle, String description, Date dateDebutEncheres,
-			Date dateFinEncheres, int prixInitiale, int prixVente, boolean etatVente) {
+			Date dateFinEncheres, int prixInitiale, int prixVente, boolean etatVente, String pseudo ) {
 		super();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -24,6 +24,7 @@ public class ArticleVendu {
 		this.prixInitiale = prixInitiale;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.pseudo = pseudo;
 	}
 	
 	
@@ -74,6 +75,12 @@ public class ArticleVendu {
 	}
 	public void setEtatVente(boolean etatVente) {
 		this.etatVente = etatVente;
+	}
+	public String getPseudo() {
+		return pseudo;
+	}
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
 	}
 
 

@@ -20,7 +20,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String SELECT_CONNEXION = "SELECT * FROM UTILISATEURS WHERE (email=? OR pseudo=?) AND motDePasse=?";
 
 	private static final String DELETE_PROFIL = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
-	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS";
+	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur";
 
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET pseudo=?, nom=?, prenom=?, email=?, telephone=? ,rue=?, codePostal=?, ville=?, motDePasse=?, credit=?, administrateur=? WHERE noUtilisateur=?";
 	
@@ -57,13 +57,13 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				rqt.setBoolean(11, utilisateur.isAdministrateur());
 				rqt.executeUpdate();
 				cnx.commit();
-				cnx.close();
 			}
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		System.out.println(numUser);
 		return numUser;
 	}
 	
@@ -153,8 +153,17 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			if (rs.next()) {
 				do {
 
-					article = new ArticleVendu(rs.getInt("noArticle"),rs.getString("nomArticle"),rs.getString("description"),rs.getDate("dateDebutEncheres"),rs.getDate("dateFinEncheres"),rs.getInt("prixInitial"),rs.getInt("prixVente"),rs.getBoolean("etatVente"));
-					
+					article = new ArticleVendu(
+							rs.getInt("noArticle"),
+							rs.getString("nomArticle"),
+							rs.getString("description"),
+							rs.getDate("dateDebutEncheres"),
+							rs.getDate("dateFinEncheres"),
+							rs.getInt("prixInitial"),
+							rs.getInt("prixVente"),
+							rs.getBoolean("etatVente"), 
+							rs.getString("pseudo"));
+
 					listeArticle.add(article);
 				}while(rs.next());
 			}

@@ -34,10 +34,12 @@ public class AccueilServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
 		EnchereManager mgr = new EnchereManager();
 		List<ArticleVendu> listeArticles = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
 		request.setAttribute("listeArticles", listeArticles);
+	
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
 		if (rd!=null) {
 			rd.forward(request, response);

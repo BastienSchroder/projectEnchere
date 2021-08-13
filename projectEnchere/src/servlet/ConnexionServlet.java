@@ -51,13 +51,14 @@ public class ConnexionServlet extends HttpServlet {
 		System.out.println(mdp + identifiant);
 		Utilisateur u1 = mgr.selectConnexion(identifiant, mdp);
 		session.setAttribute("noUtilisateur", u1.getNoUtilisateur());
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("accueil");
 		if (u1!=null) {
 			rd.forward(request, response);
 		}else {
-			rd = request.getRequestDispatcher("/WEB-INF/connexion.jsp");
-			rd.forward(request, response);
+			doGet(request, response);
 		}
+			
+		
 	}
 
 }
