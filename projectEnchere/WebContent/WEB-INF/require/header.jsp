@@ -21,6 +21,9 @@
 			    <a class="nav-link" href="/projectEnchere/new-vente">Vendre un article</a>
 			  </li>
 			  <li class="nav-item">
+			    <a class="nav-link" href="/projectEnchere/detail-vente">Détail vente</a>
+			  </li>
+			  <li class="nav-item">
 			    <a class="nav-link" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
 			  </li>
 		</ul>
