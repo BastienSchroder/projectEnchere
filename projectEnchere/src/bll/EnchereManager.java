@@ -1,5 +1,8 @@
 package bll;
 
+import java.util.List;
+
+import bo.ArticleVendu;
 import bo.Utilisateur;
 import dal.DAOFactory;
 import dal.EnchereDAO;
@@ -23,5 +26,12 @@ public class EnchereManager {
 	public Utilisateur selectConnexion(String identifiant, String mdp) {
 		return this.enchereDAO.selectConnexion(identifiant, mdp);
 	}
+	
+	public void deleteProfil(int noUtilisateur) {
+		this.enchereDAO.deleteUtilisateur(noUtilisateur);
+	}
 
+	public List<ArticleVendu> selectArticles(){
+		return this.enchereDAO.selectArticles();
+	}
 }

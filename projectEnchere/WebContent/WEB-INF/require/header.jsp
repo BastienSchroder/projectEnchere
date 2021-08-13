@@ -1,7 +1,7 @@
 <div class="row header">
-	<div class="col-3"><img class="logo-page"
+	<div class="col-3"><a href="<%= request.getContextPath()%>/accueil"><img class="logo-page"
      src="./vendor/img/logo.png"
-     alt="Le logo de la hess">
+     alt="Le logo de la hess" ></a>
 	</div>
 	<div class="col align-items-right">
 		<ul class="nav justify-content-end align-middle">

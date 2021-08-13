@@ -35,18 +35,15 @@ public class ProfilServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EnchereManager mgr = new EnchereManager();
 		HttpSession session = request.getSession();
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");	
 		int noUtilisateur = -1;
 		if(session.getAttribute("noUtilisateur") != null) {
 			noUtilisateur = (int) session.getAttribute("noUtilisateur");
-		}else {	
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
-			if (rd!=null) {
-				rd.forward(request, response);
-			}	
+			rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
+			Utilisateur u1 = mgr.selectUtilisateur(noUtilisateur);
+			request.setAttribute("user1", u1);
 		}
-		Utilisateur u1 = mgr.selectUtilisateur(noUtilisateur);
-		request.setAttribute("user1", u1);		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/profil.jsp");
+		
 		if (rd!=null) {
 			rd.forward(request, response);
 		}	
@@ -56,8 +53,14 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		doGet(request, response);
+		EnchereManager mgr = new EnchereManager();
+		HttpSession session = request.getSession();
+		mgr.deleteProfil((int) session.getAttribute("noUtilisateur"));
+		session.setAttribute("noUtilisateur", null);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+		if (rd!=null) {
+			rd.forward(request, response);
+		}
 	}
 
 }

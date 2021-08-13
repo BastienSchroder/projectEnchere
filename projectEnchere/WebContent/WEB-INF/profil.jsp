@@ -11,6 +11,7 @@
 <body>
 <%@include file="require/header.jsp" %>
 <%Utilisateur u1 = (Utilisateur)request.getAttribute("user1"); %>
+<form action="<%= request.getContextPath()%>/profil" method="POST">
 <div class="row body">
 	<h2 class="text-center list-title h1">Profil</h2>
 	<div class=" row box-shadow margin-div">
@@ -27,7 +28,10 @@
 		</ul>
 	</div>
 	
+	<input type="submit" name="supprimer" class="btn btn-outline-secondary btn-lg" value="Supprimer compte">
+	
 </div>
 </div>
+</form>
 </body>
 </html>

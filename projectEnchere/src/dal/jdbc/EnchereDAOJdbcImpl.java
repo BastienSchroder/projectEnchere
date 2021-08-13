@@ -3,7 +3,11 @@ package dal.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import bo.ArticleVendu;
 import bo.Utilisateur;
 import dal.EnchereDAO;
 
@@ -12,6 +16,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur) values(?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String SELECT_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE noUtilisateur=?";
 	private static final String SELECT_CONNEXION = "SELECT * FROM UTILISATEURS WHERE (email=? OR pseudo=?) AND motDePasse=?";
+	private static final String DELETE_PROFIL = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
+	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS";
 	
 	@Override
 	public void insertUtilisateur(Utilisateur utilisateur) {
@@ -53,6 +59,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			if (rs.next()) {
 				user = new Utilisateur(noUtilisateur, rs.getString("pseudo"),rs.getString("nom"),rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"),rs.getString("rue"), rs.getString("codePostal"), rs.getString("ville"), rs.getString("motDePasse"), rs.getInt("credit"), rs.getBoolean("administrateur"));
 			}
+			cnx.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -74,11 +81,56 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			if(rs.next()) {
 				u1 = this.selectUtilisateur(rs.getInt("noUtilisateur"));
 			}
+			cnx.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return u1;
 	}
+
+	@Override
+	public void deleteUtilisateur(int noUtilisateur) {
+		// TODO Auto-generated method stub
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(DELETE_PROFIL);
+			rqt.setInt(1, noUtilisateur);
+			rqt.executeUpdate();
+			cnx.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public List<ArticleVendu> selectArticles() {
+		// TODO Auto-generated method stub
+		List<ArticleVendu> listeArticle = new ArrayList<>();
+		Connection cnx = null;
+		ArticleVendu article = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			Statement rqt = cnx.createStatement();
+			ResultSet rs = rqt.executeQuery(SELECT_ARTICLES);
+
+			if (rs.next()) {
+				do {
+
+					article = new ArticleVendu(rs.getInt("noArticle"),rs.getString("nomArticle"),rs.getString("description"),rs.getDate("dateDebutEncheres"),rs.getDate("dateFinEncheres"),rs.getInt("prixInitial"),rs.getInt("prixVente"),rs.getBoolean("etatVente"));
+					
+					listeArticle.add(article);
+				}while(rs.next());
+			}
+			cnx.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return listeArticle;
+	}
+	
+	
+	
 	
 	
 
