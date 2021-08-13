@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.ArrayList" %>
+<%@page import="bo.Categorie"%>
+<%@page import="java.util.Iterator"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +13,7 @@
 <body>
 
  <%@include file="require/header.jsp" %>
+ <%ArrayList<Categorie> cl = (ArrayList<Categorie>)request.getAttribute("Categorie"); %>
 <div class="row body">
 	<h2 class="text-center list-title h1">Liste des enchères</h2>
 	<div class=" row box-shadow margin-div">
@@ -28,11 +34,11 @@
 			<div class="col-6 col-sm-3">
 				<select class="form-select" aria-label="Default select example">
 			  		<option selected>-- Catégorie --</option>
-			  		<option value="0">Culotte</option>
-			  		<option value="1">String</option>
-			  		<option value="2">Chausette</option>
-			  		<option value="3">Tanga</option>
-			  		<option value="4">Babouche</option>
+			  		<%for (int i = 0; i < cl.size(); i++) {
+			  		    Categorie categ = cl.get(i);
+			  		  %><option value="<%= categ.getLibelle()%>"><%= categ.getLibelle()%></option><%
+			  		    
+			  		}%> 
 				</select>
 			</div>
 			

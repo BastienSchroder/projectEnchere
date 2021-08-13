@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ page import="java.util.ArrayList" %>
+    <%@page import="bo.Categorie"%>
+    <%@page import="java.util.Iterator"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,60 +17,70 @@
 </head>
 <body>
 <%@include file="require/header.jsp" %>
+<%ArrayList<Categorie> cl = (ArrayList<Categorie>)request.getAttribute("Categorie"); %>
 <div class="row body">
 	<h2 class="text-center list-title h1">Nouvelle ventes</h2>
 	<div class=" row box-shadow margin-div">
 	<div  class=" padding-new-vente col-7">
-		<form>
+		<form action="<%= request.getContextPath()%>/new-vente" method="POST">
 			  <div class="mb-3 col-3">
 			    <label for="article-name" class="form-label">Nom de l'article</label>
-			    <input type="text" class="form-control" id="article-name" >
+			    <input type="text" name="article-name" class="form-control" id="article-name" >
 			  </div>
 			  <div class="col-6 mb-3">
 			    <label for="description" class="form-label">Description</label>
-			    <textarea class="form-control" id="description" rows="3"></textarea>
+			    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
 			  </div>
 			  <div class="mb-3 col-6 col-sm-3">
 			  <label  class="form-label">Catégorie</label>
-				<select class="form-select" >
+				<select id="selectCategorie" name="selectCategorie" class="form-select" >
 			  		<option selected>-- Catégorie --</option>
-			  		<option value="0">Culotte</option>
-			  		<option value="1">String</option>
-			  		<option value="2">Chausette</option>
-			  		<option value="3">Tanga</option>
-			  		<option value="4">Babouche</option>
+			  		<%for (int i = 0; i < cl.size(); i++) {
+			  		    Categorie categ = cl.get(i);
+			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
+			  		    
+			  		}%> 		
+			  		
+			  		
+			  		<!-- <option value="human">Humain</option>
+			  		<option value="furniture">Meuble</option>
+			  		<option value="cloth">Vêtements</option>
+			  		<option value="house">Immobilier</option>
+			  		<option value="organ">Organe</option> -->
 				</select>
 			</div>
-			 <div class="input-group mb-3">
-				  <div class="custom-file">
-				    <input type="file" class="custom-file-input" id="enchereImage">
-				  </div>
-				</div>
+			
 			 <div class="col-2 mb-3">
 			    <label for="price" class="form-label">Mise à prix</label>
-			    <input type="number" class="form-control" id="price" >
+			    <input type="number" name="price" class="form-control" id="price" >
 			  </div>
 			  <div class=" col-3 mb-3">
 			    <label for="datestart" class="form-label">Date de début de l'enchère</label>
-			    <input class="datepicker" type="text" id="datestart">
+			    <input class="datepicker" name="datestart" type="text" id="datestart">
 			  </div>
 			  <div class=" col-3 mb-3">
 			    <label for="dateend" class="form-label">Date de fin de l'enchère</label>
-			    <input class="datepicker" type="text" id="dateend">
+			    <input class="datepicker" name="dateend" type="text" id="dateend">
 			  </div>
 			  <div class="col-6 mb-3 retrait">
 			  <h4>Adresse de retrait :</h4>
-			    <label for="rue" class="form-label">Rue : </label>
-			    <input type="number" class="form-control" id="rue" >
-			    <label for="cp" class="form-label">Code postal : </label>
-			    <input type="number" class="form-control" id="cp" >
-			    <label for="ville" class="form-label">Ville : </label>
-			    <input type="number" class="form-control" id="ville" >
+			  <div class=" col-3 mb-3">
+				    <label for="rue" class="form-label">Rue : </label>
+				    <input type="text" name="rue" class="form-control" id="rue" >
+			    </div>
+			    <div class=" col-3 mb-3">
+				    <label for="cp" class="form-label">Code postal : </label>
+				   <input type="number" name="cp" id="cp" pattern="[0-9]" maxlength="5" placeholder="99999">
+			   </div>
+			   <div class=" col-3 mb-3">
+				    <label for="ville" class="form-label">Ville : </label>
+				    <input type="text" class="form-control" name="ville" id="ville" >
+			    </div>
 			  </div>
 			  
 			  <button type="submit" class="btn btn-primary">Enregistrer</button>
-			  <a href="#" class="btn btn-primary">Annuler</a>
-			  <a href="#" class="btn btn-primary">Annuler la vente</a>
+			  <a href="accueil" class="btn btn-primary">Annuler</a>
+			  
 		</form>
 	</div>
 	<div  class=" tip-box col-5">
@@ -79,9 +92,6 @@
 <p><strong>faites un minimum d'effort sur celle-ci pour donner envie aux futurs acqu&eacute;reur !</strong></p>
 <p></p>
 <p><strong>- La cat&eacute;gorie facilite la recherche des acqu&eacute;reur, v&eacute;rifier que votre vente est bien dans la bonne cat&eacute;gorie.</strong></p>
-<p></p>
-<p><strong>- Une bonne photo donne toujours plus envie d'acheter, &eacute;viter les photos en 240p.</strong></p>
-<p><strong></strong></p>
 <p></p>
 <p><strong>- La mise &agrave; prix correspond &agrave; la somme minimale que vous souhaitez percevoir,</strong></p>
 <p><strong>cependant ce n'est certainement pas la maximal que vous percevrez !</strong></p>
