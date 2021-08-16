@@ -22,6 +22,7 @@ public interface EnchereDAO {
 	public ArticleVendu selectArticleNo(int noArticle);
 	public Categorie selectCategorieNo(int noCategorie);
 	public Retrait selectRetraitNo(int noArticle);
-
+	public int updateEnchere(int noArticle,int noUtilisateur, int montantEnchere);
+	public void updateUtilisateurCredit(int noUtilisateur,int montant);
 
 }

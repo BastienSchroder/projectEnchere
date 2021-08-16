@@ -23,42 +23,45 @@ Categorie categorie = (Categorie) request.getAttribute("categorie");
 Retrait retrait = (Retrait) request.getAttribute("retrait");
 Utilisateur utilisateur = (Utilisateur) request.getAttribute("utilisateur");
 %>
-<div class="row body">
-	<h2 class="text-center mb-5 list-title h1">Détail vente</h2>
-	<div class="container">
-		<div class=" row box-shadow margin-div">
+<form action="<%= request.getContextPath()%>/encherir" method="POST">
+	<div class="row body">
+		<h2 class="text-center mb-5 list-title h1">Détail vente</h2>
+		<div class="container">
+			<div class=" row box-shadow margin-div">
+				<input type="hidden" name="noArticle" value="<%= article.getNoArticle() %>">
+				<input type="hidden" name="credit" value="<%= utilisateur.getCredit() %>">
+				
+					<div class="col-4">
+						<img src="..." srcset="https://images.unsplash.com/photo-1503602642458-232111445657?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1834&q=80" class="img-fluid" alt="...">
+					</div>
+					<div class="col-6">
+						<h3 class="mb-3"><%= article.getNomArticle() %></h3>
+						<p><b>Description du produit : </b></p>
+						<p><%= article.getDescription() %>
+						</p class="mb-3"><b>Catégorie : </b>
+						<p><%= categorie.getLibelle() %></p>
+						</p class="mb-3"><b>Meilleure offre : </b>
+						<p><%= enchere.getMontantEnchere() %></p>
+						</p class="mb-3"><b>Mise à prix : </b>
+						<p><%= article.getPrixInitiale() %></p>
+						</p class="mb-3"><b>Fin de l'enchère : </b>
+						<p><%= article.getDateFinEncheres() %></p>
+						</p class="mb-3"><b>Retrait : </b>
+						<p><%= retrait.getRue() %> <br><%= retrait.getCodePostal() + "-" + retrait.getVille()%> </p>
+						<p class="mb-3"><b>Vendeur : </b></p>
+						<p><%= utilisateur.getPseudo() %> </p>
 			
-				<div class="col-4">
-					<img src="..." srcset="https://images.unsplash.com/photo-1503602642458-232111445657?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1834&q=80" class="img-fluid" alt="...">
-				</div>
-				<div class="col-6">
-					<h3 class="mb-3"><%= article.getNomArticle() %></h3>
-					<p><b>Description du produit : </b></p>
-					<p><%= article.getDescription() %>
-					</p class="mb-3"><b>Catégorie : </b>
-					<p><%= categorie.getLibelle() %></p>
-					</p class="mb-3"><b>Meilleure offre : </b>
-					<p><%= enchere.getMontantEnchere() %></p>
-					</p class="mb-3"><b>Mise à prix : </b>
-					<p><%= article.getPrixInitiale() %></p>
-					</p class="mb-3"><b>Fin de l'enchère : </b>
-					<p><%= article.getDateFinEncheres() %></p>
-					</p class="mb-3"><b>Retrait : </b>
-					<p><%= retrait.getRue() %> <br><%= retrait.getCodePostal() + "-" + retrait.getVille()%> </p>
-					<p class="mb-3"><b>Vendeur : </b></p>
-					<p><%= utilisateur.getPseudo() %> </p>
-		
-					<form>
-						<label for="encherir" class="m"><b>Ma proposition : </b></label>
-						<div class="input-group mb-3">
-		  					<input type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2">
-		  					<button class="btn btn-outline-success" type="button" id="button-addon2">Enchérir</button>
-						</div>
-					</form>
 			
+							<label for="encherir" class="m"><b>Ma proposition : </b></label>
+							<div class="input-group mb-3">
+			  					<input name="montantEnchere" type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2">
+			  					<input type="submit" class="btn btn-outline-success"  id="button-addon2" value="Enchérir">
+							</div>
+				
+				
+			</div>
 		</div>
-	</div>
-</div>	
-
+	</div>	
+</form>
 </body>
 </html>

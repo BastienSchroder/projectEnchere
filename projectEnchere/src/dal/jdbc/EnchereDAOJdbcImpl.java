@@ -42,6 +42,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String SELECT_CATEGORIE_NO = "SELECT * from CATEGORIES WHERE noCategorie = ?";
 	private static final String SELECT_RETRAIT_NO = "SELECT * from RETRAITS WHERE noArticle = ?";
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET pseudo=?, nom=?, prenom=?, email=?, telephone=? ,rue=?, codePostal=?, ville=?, motDePasse=?, credit=?, administrateur=? WHERE noUtilisateur=?";
+    private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montantEnchere=?, noUtilisateur=? WHERE montantEnchere < ? AND noArticle=?";
+    private static final String UPDATE_UTILISATEUR_CREDIT = "UPDATE UTILISATEURS SET credit=credit-? WHERE  noUtilisateur=? AND credit-?>=0";
 
 	@Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
@@ -408,5 +410,48 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		
 	}
 
+	@Override
+	public int updateEnchere(int noArticle,int noUtilisateur, int montantEnchere) {
+		Connection cnx = null;
+		int res = -1;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement requete = cnx.prepareStatement(UPDATE_ENCHERE);
+			
+			requete.setInt(1, montantEnchere);
+			requete.setInt(2, noUtilisateur);
+			requete.setInt(3, montantEnchere);
+			requete.setInt(4, noArticle);
+			res = requete.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(res);
+		return res;
+	}
+
+	@Override
+	public void updateUtilisateurCredit(int noUtilisateur, int montant) {
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement requete = cnx.prepareStatement(UPDATE_UTILISATEUR_CREDIT);
+			requete.setInt(1, montant);
+			requete.setInt(2, noUtilisateur);
+			requete.setInt(3, montant);
+			requete.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+
+	
 
 }

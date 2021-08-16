@@ -73,4 +73,10 @@ public class EnchereManager {
 	public void insertEnchere(Enchere enchere) {
 		this.enchereDAO.insertEnchere(enchere);
 	}
+	
+	public void encherir(int noArticle, int noUtilisateur,int montantEnchere) {
+		if(this.enchereDAO.updateEnchere(noArticle,noUtilisateur,montantEnchere) > 0) {
+			this.enchereDAO.updateUtilisateurCredit(noUtilisateur, montantEnchere);
+		}		
+	}
 }
