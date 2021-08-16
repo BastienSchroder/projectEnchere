@@ -4,6 +4,7 @@ package bll;
 import java.util.ArrayList;
 import bo.ArticleVendu;
 import bo.Categorie;
+import bo.Enchere;
 import bo.Retrait;
 import java.util.List;
 import bo.Utilisateur;
@@ -51,5 +52,25 @@ public class EnchereManager {
 
 	public List<ArticleVendu> selectArticles(){
 		return this.enchereDAO.selectArticles();
+	}
+	
+	public Enchere selectDetailEnchere(int noArticle) {
+		return this.enchereDAO.selectDetailEnchere(noArticle);
+	}
+	
+	public ArticleVendu selectArticleNo(int noArticle) {
+		return this.enchereDAO.selectArticleNo(noArticle);
+	}
+	
+	public Categorie selectCategorieNo(int noCategorie) {
+		return this.enchereDAO.selectCategorieNo(noCategorie);
+	}
+	
+	public Retrait selectRetraitNo(int noArticle) {
+		return this.enchereDAO.selectRetraitNo(noArticle);
+	}
+	
+	public void insertEnchere(Enchere enchere) {
+		this.enchereDAO.insertEnchere(enchere);
 	}
 }

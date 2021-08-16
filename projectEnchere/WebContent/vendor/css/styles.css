@@ -58,9 +58,8 @@ body{
 .padding-new-vente{
 	padding-left : 100px
 }
-<!-- Connexion -->
-#divForm{
-	
+
+#divDetailVente{
+	text-decoration : none;
+	color : black;
 }
-
-

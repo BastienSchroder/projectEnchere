@@ -115,6 +115,7 @@
 		%>
 		
             <div class="card mb-3 single-enchere" style="max-width: 540px;">
+            <a id="divDetailVente" href="<%= request.getContextPath()%>/detail-vente?noArticle=<%= article.getNoArticle()%>">
               <div class="row no-gutters">
 	                <div class="col-md-4">
 	                  <img src="./vendor/img/auction.png" class="card-img" alt="...">
@@ -128,7 +129,7 @@
 		                  </div>
 	              	  </div>
                </div>
-            </div>
+            </a></div>
         
            	<%
 		}

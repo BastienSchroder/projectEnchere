@@ -1,12 +1,13 @@
 package bo;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Enchere {
-	private Date dateEnchere;
+	private LocalDate dateEnchere;
 	private int montantEnchere;
 	
-	public Enchere(Date dateEnchere, int montantEnchere) {
+	public Enchere(LocalDate dateEnchere, int montantEnchere) {
 		super();
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
@@ -14,13 +15,13 @@ public class Enchere {
 	/**
 	 * @return the dateEnchere
 	 */
-	public Date getDateEnchere() {
+	public LocalDate getDateEnchere() {
 		return dateEnchere;
 	}
 	/**
 	 * @param dateEnchere the dateEnchere to set
 	 */
-	public void setDateEnchere(Date dateEnchere) {
+	public void setDateEnchere(LocalDate dateEnchere) {
 		this.dateEnchere = dateEnchere;
 	}
 	/**
@@ -35,6 +36,7 @@ public class Enchere {
 	public void setMontantEnchere(int montantEnchere) {
 		this.montantEnchere = montantEnchere;
 	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
