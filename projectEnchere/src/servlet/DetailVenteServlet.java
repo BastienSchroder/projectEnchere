@@ -44,14 +44,11 @@ public class DetailVenteServlet extends HttpServlet {
 		Retrait retrait = mgr.selectRetraitNo(noArticle);
 		HttpSession session = request.getSession();
 		Utilisateur utilisateur = mgr.selectUtilisateur((int)session.getAttribute("noUtilisateur"));
-
-		System.out.println(utilisateur);
 		request.setAttribute("detailEnchere", enchere);
 		request.setAttribute("article", article);
 		request.setAttribute("categorie", categorie);
 		request.setAttribute("retrait", retrait);
 		request.setAttribute("utilisateur", utilisateur);
-
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/detailVente.jsp");
 
 		if (rd!=null) {

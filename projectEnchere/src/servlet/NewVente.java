@@ -93,10 +93,8 @@ public class NewVente extends HttpServlet {
 				);
 		mgr.insertEnchere(enchere);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("accueil");
-		if (rd != null) {
-			rd.forward(request, response);
-		}
+		response.sendRedirect("accueil");
+
 		
 	}
 

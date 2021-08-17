@@ -49,6 +49,8 @@
 		</div>
 		<div class="row">
 			<div class="col">
+					 <% if(session.getAttribute("noUtilisateur") != null) { %>
+
 				<div class="form-check ">
 					  <input class="form-check-input" type="checkbox" value="" id="achat">
 					  <label class="form-check-label" for="achat">
@@ -68,7 +70,7 @@
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="bidWon" id="bidWon" disabled>
+					  <input name="filtreEnchereRemporte" class="form-check-input" type="checkbox" value="bidWon" id="bidWon" disabled>
 					  <label class="form-check-label" for="bidWon">
 					    Mes enchères remportées
 					  </label>
@@ -99,9 +101,10 @@
 					    Ventes terminées
 					  </label>
 				</div>
+				 <% } %>
 			</div>
 			<div class="col">
-			<a href="#" class="btn btn-primary btn-lg " tabindex="-1" role="button" >Rechercher</a>
+			<input type="submit" class="btn btn-primary btn-lg " tabindex="-1" value="Rechercher" >
 			</div>
 			<div class="col">
 			</div>
@@ -113,6 +116,7 @@
 		for(ArticleVendu article : listeArticles){
 			if(!article.isEtatVente()){
 		%>
+		<input type="hidden" name="dateFinEnchere" value="<%= article.getDateFinEncheres()%>">
 		
             <div class="card mb-3 single-enchere" style="max-width: 540px;">
             <a id="divDetailVente" href="<%= request.getContextPath()%>/detail-vente?noArticle=<%= article.getNoArticle()%>">

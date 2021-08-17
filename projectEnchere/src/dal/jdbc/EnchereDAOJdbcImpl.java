@@ -38,14 +38,16 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String DELETE_PROFIL = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
 	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur ";
 	private static final String SELECT_DETAIL_ENCHERE = "SELECT * from  ENCHERES WHERE noArticle = ?";
-	private static final String SELECT_ARTICLE_NO = "SELECT * from  ARTICLES_VENDUS WHERE noArticle = ?";
+	private static final String SELECT_ARTICLE_NO = "SELECT * from  ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE noArticle = ?";
 	private static final String SELECT_CATEGORIE_NO = "SELECT * from CATEGORIES WHERE noCategorie = ?";
 	private static final String SELECT_RETRAIT_NO = "SELECT * from RETRAITS WHERE noArticle = ?";
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET pseudo=?, nom=?, prenom=?, email=?, telephone=? ,rue=?, codePostal=?, ville=?, motDePasse=?, credit=?, administrateur=? WHERE noUtilisateur=?";
     private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montantEnchere=?, noUtilisateur=? WHERE montantEnchere < ? AND noArticle=?";
     private static final String UPDATE_UTILISATEUR_CREDIT = "UPDATE UTILISATEURS SET credit=credit-? WHERE  noUtilisateur=? AND credit-?>=0";
-
-	@Override
+    private static final String SELECT_ENCHERE_REMPORTE = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle  INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateFinEncheres,GETDATE()) >= 0";
+    private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nomArticle=?, description=?, dateFinEncheres=?, prixInitial=?, prixVente=? ,noCategorie=? WHERE noArticle=?;";
+	
+    @Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
 		Connection cnx = null;
 		PreparedStatement rqt = null;
@@ -329,7 +331,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 						rs.getInt("prixVente"),
 						rs.getBoolean("etatVente"), 
 						rs.getInt("noUtilisateur"), 
-						rs.getInt("noCategorie")); 
+						rs.getInt("noCategorie"),
+						rs.getString("pseudo"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -428,7 +431,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(res);
 		return res;
 	}
 
@@ -449,6 +451,42 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		}
 		
 	}
+
+	@Override
+	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				ArrayList<ArticleVendu> listeEnchereRemporte = new ArrayList<>();
+				Connection cnx = null;
+				ArticleVendu article = null;
+				try {
+					cnx = JdbcTools.getConnection();
+					PreparedStatement rqt = cnx.prepareStatement(SELECT_ENCHERE_REMPORTE);
+					rqt.setInt(1, noUtilisateur);
+					ResultSet rs = rqt.executeQuery();
+					if (rs.next()) {
+						do {
+							article = new ArticleVendu(
+									rs.getInt("noArticle"),
+									rs.getString("nomArticle"),
+									rs.getString("description"),
+									rs.getDate("dateDebutEncheres").toLocalDate(),
+									rs.getDate("dateFinEncheres").toLocalDate(),
+									rs.getInt("prixInitial"),
+									rs.getInt("prixVente"),
+									rs.getBoolean("etatVente"), 
+									rs.getString("pseudo"));
+							listeEnchereRemporte.add(article);
+						}while(rs.next());
+					}
+					
+					cnx.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				return listeEnchereRemporte;
+	}
+	
 	
 	
 

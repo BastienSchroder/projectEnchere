@@ -1,6 +1,7 @@
 package bll;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import bo.ArticleVendu;
 import bo.Categorie;
@@ -78,5 +79,9 @@ public class EnchereManager {
 		if(this.enchereDAO.updateEnchere(noArticle,noUtilisateur,montantEnchere) > 0) {
 			this.enchereDAO.updateUtilisateurCredit(noUtilisateur, montantEnchere);
 		}		
+	}
+	
+	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur){
+		return this.enchereDAO.selectEnchereRemporte(noUtilisateur);
 	}
 }

@@ -1,6 +1,10 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -9,6 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.jasper.tagplugins.jstl.core.Out;
+
 import bll.EnchereManager;
 import bo.Categorie;
 import bo.ArticleVendu;
@@ -43,6 +51,9 @@ public class AccueilServlet extends HttpServlet {
 
 		List<ArticleVendu> listeArticles = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
+		if(request.getAttribute("listeEnchereRemporte") != null) {
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
+		}
 		request.setAttribute("listeArticles", listeArticles);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
 		if (rd!=null) {
@@ -56,6 +67,15 @@ public class AccueilServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		String filtreEnchereRemporte = request.getParameter("filtreEnchereRemporte");
+		int noUtilisateur = (int) session.getAttribute("noUtilisateur");
+		ArrayList<ArticleVendu> listeEnchereRemporte = null;
+		EnchereManager mgr = new EnchereManager();
+		if(filtreEnchereRemporte != null) {
+			listeEnchereRemporte = mgr.selectEnchereRemporte(noUtilisateur);
+			request.setAttribute("listeEnchereRemporte", listeEnchereRemporte);
+		}
 		doGet(request, response);
 	}
 

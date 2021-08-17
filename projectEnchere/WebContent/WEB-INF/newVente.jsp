@@ -40,13 +40,6 @@
 			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
 			  		    
 			  		}%> 		
-			  		
-			  		
-			  		<!-- <option value="human">Humain</option>
-			  		<option value="furniture">Meuble</option>
-			  		<option value="cloth">Vêtements</option>
-			  		<option value="house">Immobilier</option>
-			  		<option value="organ">Organe</option> -->
 				</select>
 			</div>
 			

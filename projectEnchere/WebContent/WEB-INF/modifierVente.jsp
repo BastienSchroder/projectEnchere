@@ -5,12 +5,13 @@
 <%@ page import="bo.Categorie" %>
 <%@ page import="bo.Retrait" %>
 <%@ page import="bo.Utilisateur" %>
+<%@ page import="java.util.ArrayList" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Détail vente</title>
+<title>Modifier vente</title>
 <%@include file="require/head.jsp" %>
 
 </head>
@@ -22,6 +23,7 @@ Enchere enchere = (Enchere)request.getAttribute("detailEnchere");
 Categorie categorie = (Categorie) request.getAttribute("categorie");
 Retrait retrait = (Retrait) request.getAttribute("retrait");
 Utilisateur utilisateur = (Utilisateur) request.getAttribute("utilisateur");
+ArrayList<Categorie> listeCategories = (ArrayList<Categorie>)request.getAttribute("listeCategories");
 %>
 <form action="<%= request.getContextPath()%>/encherir" method="POST">
 	<div class="row body">
@@ -36,38 +38,42 @@ Utilisateur utilisateur = (Utilisateur) request.getAttribute("utilisateur");
 					<div class="col-6">
 						<h3 class="mb-3"><%= article.getNomArticle() %></h3>
 						<p><b>Description du produit : </b></p>
-						<p><%= article.getDescription() %>
+						<input type="text" name="description" value="<%= article.getDescription() %>">
 						</p class="mb-3"><b>Catégorie : </b>
-						<p><%= categorie.getLibelle() %></p>
+				<select id="selectCategorie" name="selectCategorie" class="form-select" >
+			  		<option selected><%= categorie.getLibelle() %></option>
+			  			<%
+			  			for(Categorie c1 : listeCategories){
+			  				if(!c1.getLibelle().equals(categorie.getLibelle())){
+			  					%>
+			  					<option value="<%= c1.getNoCategorie()%>"><%= c1.getLibelle()%></option>
+			  			<%
+			  			}}
+			  			%>
+				</select>
 						</p class="mb-3"><b>Meilleure offre : </b>
-						<p><%= enchere.getMontantEnchere() %></p>
+						<input type="text" name="meilleureOffre" value="<%=  enchere.getMontantEnchere()  %>">
 						</p class="mb-3"><b>Mise à prix : </b>
-						<p><%= article.getPrixInitiale() %></p>
+						<input type="text" name="miseAPrix" value="<%=   article.getPrixInitiale()  %>">
 						</p class="mb-3"><b>Fin de l'enchère : </b>
-						<p><%= article.getDateFinEncheres() %></p>
+						<input type="date" class="datepicker" name="finEnchere"  value="<%=  article.getDateFinEncheres()%>">
 						</p class="mb-3"><b>Retrait : </b>
-						<p><%= retrait.getRue() %> <br><%= retrait.getCodePostal() + "-" + retrait.getVille()%> </p>
+						<input type="text" name="retraitRue" value="<%=  retrait.getRue()%>">
+						<br>
+						<input type="text" name="codePostal" value="<%= retrait.getCodePostal()%>">
+						<input type="text" name="ville" value="<%= retrait.getVille()%>">
 						<p class="mb-3"><b>Vendeur : </b></p>
-						<p><%= article.getPseudo() %> </p>
+						<p><%= utilisateur.getPseudo() %> </p>
 			
 			
 							<label for="encherir" class="m"><b>Ma proposition : </b></label>
 							<div class="input-group mb-3">
-			  					<input name="montantEnchere" type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2"  <%= session.getAttribute("noUtilisateur").equals(article.getNoUtilisateur()) ? "disabled" : "" %> >
-			  					<input type="submit" class="btn btn-outline-success"  id="button-addon2" value="Enchérir" <%= session.getAttribute("noUtilisateur").equals(article.getNoUtilisateur()) ? "disabled" : "" %>>
+			  					<input name="montantEnchere" type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2"  <%= session.getAttribute("noUtilisateur").equals(utilisateur.getNoUtilisateur()) ? "disabled" : "" %> >
+			  					<input type="submit" class="btn btn-outline-success"  id="button-addon2" value="Enchérir" <%= session.getAttribute("noUtilisateur").equals(utilisateur.getNoUtilisateur()) ? "disabled" : "" %>>
 							</div>
 							<input type="hidden" name="credit" value="<%= utilisateur.getCredit() %>">
-							<label>Crédits : <%= utilisateur.getCredit() %></label>		
-							<% 
-							if(session.getAttribute("noUtilisateur").equals(article.getNoUtilisateur())){
-							%>
-							<div>
-            					<a  href="<%= request.getContextPath()%>/modifier-vente?noArticle=<%= article.getNoArticle()%>">Modifier vente</a>
-							</div>
-							<%} %>
+							<label>Crédits : <%= utilisateur.getCredit() %></label>				
 			</div>
-			
-			
 		</div>
 	</div>	
 </form>
