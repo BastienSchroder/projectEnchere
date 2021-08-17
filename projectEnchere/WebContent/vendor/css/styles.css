@@ -80,6 +80,7 @@ body{
 .padding-new-vente{
 	padding-left : 100px
 }
+
 .pouf{
 	left:0px!important;
 	width :10px !important;
@@ -103,4 +104,7 @@ body{
 	
 }
 
-
+#divDetailVente{
+	text-decoration : none;
+	color : black;
+}

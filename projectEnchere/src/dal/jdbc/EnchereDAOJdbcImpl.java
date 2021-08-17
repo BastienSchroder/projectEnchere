@@ -1,16 +1,20 @@
 package dal.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.ArrayList;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import bo.ArticleVendu;
 import bo.Categorie;
+import bo.Enchere;
 import bo.Retrait;
 
 import java.sql.Statement;
@@ -28,11 +32,18 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String SELECT_CATEGORIE = "SELECT * FROM CATEGORIES ";
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nomArticle,description,dateDebutEncheres,dateFinEncheres,prixInitial,etatVente,noUtilisateur,noCategorie) values(?,?,?,?,?,?,?,?)";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (noArticle,rue,codePostal,ville) values(?,?,?,?)";
+	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES (noUtilisateur,noArticle,dateEnchere,montantEnchere) values(?,?,?,?)";
 	private static final String SELECT_ARTICLE = "SELECT TOP 1 * FROM ARTICLES_VENDUS ORDER BY noArticle DESC";
 	private static final String SELECT_CONNEXION = "SELECT * FROM UTILISATEURS WHERE (email=? OR pseudo=?) AND motDePasse=?";
 	private static final String DELETE_PROFIL = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
-	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur";
+	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur ";
+	private static final String SELECT_DETAIL_ENCHERE = "SELECT * from  ENCHERES WHERE noArticle = ?";
+	private static final String SELECT_ARTICLE_NO = "SELECT * from  ARTICLES_VENDUS WHERE noArticle = ?";
+	private static final String SELECT_CATEGORIE_NO = "SELECT * from CATEGORIES WHERE noCategorie = ?";
+	private static final String SELECT_RETRAIT_NO = "SELECT * from RETRAITS WHERE noArticle = ?";
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET pseudo=?, nom=?, prenom=?, email=?, telephone=? ,rue=?, codePostal=?, ville=?, motDePasse=?, credit=?, administrateur=? WHERE noUtilisateur=?";
+    private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montantEnchere=?, noUtilisateur=? WHERE montantEnchere < ? AND noArticle=?";
+    private static final String UPDATE_UTILISATEUR_CREDIT = "UPDATE UTILISATEURS SET credit=credit-? WHERE  noUtilisateur=? AND credit-?>=0";
 
 	@Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
@@ -49,7 +60,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			ResultSet rs = requete.executeQuery();
 			
 			if (!rs.next()) {
-				//System.out.println(utilisateur.getPseudo().equals(rs.getString("pseudo")) || utilisateur.getEmail().equals(rs.getString("email")));
 			
 				rqt = cnx.prepareStatement(INSERT_UTILISATEUR, PreparedStatement.RETURN_GENERATED_KEYS);
 				numUser = rqt.RETURN_GENERATED_KEYS;
@@ -72,7 +82,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		System.out.println(numUser);
 		return numUser;
 	}
 
@@ -80,9 +89,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		Connection cnx = null;
 		Timestamp datestart = Timestamp.valueOf(article.getDateDebutEncheres().atStartOfDay());
 		Timestamp datefin = Timestamp.valueOf(article.getDateFinEncheres().atStartOfDay());
-		 //LocalDateTime now = LocalDateTime.now();
-		//Timestamp ts = Timestamp.valueOf(article.getDateFinEncheres());
-		//article.getDateFinEncheres()
 		try {
 			cnx = JdbcTools.getConnection();
 			cnx.setAutoCommit(false);
@@ -114,10 +120,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             rqt = cnx.prepareStatement(SELECT_ARTICLE);
             ResultSet rs = rqt.executeQuery();
             if (rs.next()) {
-            	//System.out.println("heeeeeee "+ rs.getInt("noArticle"));
-            	//System.out.println("heeeeeee2 "+ retrait.getRue());
-            	//System.out.println("heeeeeee3 "+ retrait.getCodePostal());
-            	//System.out.println("heeeeeee4 "+ retrait.getVille());
                 rqt = cnx.prepareStatement(INSERT_RETRAIT, PreparedStatement.RETURN_GENERATED_KEYS);
                 rqt.setInt(1, rs.getInt("noArticle"));
                 rqt.setString(2, retrait.getRue());
@@ -130,8 +132,32 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             e.printStackTrace();
         }
     }
+	
 
 	
+	@Override
+	public void insertEnchere(Enchere enchere) {
+		Connection cnx = null;
+        PreparedStatement rqt = null;
+        try {
+            cnx = JdbcTools.getConnection();
+            rqt = cnx.prepareStatement(SELECT_ARTICLE);
+            ResultSet rs = rqt.executeQuery();
+            if (rs.next()) {
+            	Date date = java.sql.Date.valueOf(enchere.getDateEnchere());
+                rqt = cnx.prepareStatement(INSERT_ENCHERE, PreparedStatement.RETURN_GENERATED_KEYS);
+                rqt.setInt(1, rs.getInt("noUtilisateur"));
+                rqt.setInt(2,rs.getInt("noArticle"));
+                rqt.setDate(3, date);
+                rqt.setInt(4, enchere.getMontantEnchere());
+                rqt.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+	}
+
 	@Override
 	public Utilisateur selectUtilisateur(int noUtilisateur) {
 		Connection cnx = null;
@@ -141,7 +167,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			PreparedStatement rqt = cnx.prepareStatement(SELECT_UTILISATEUR);
 			rqt.setInt(1, noUtilisateur);
 			ResultSet rs = rqt.executeQuery();
-			//System.out.println(rs.wasNull());
 			if (rs.next()) {
 
 
@@ -176,19 +201,16 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			PreparedStatement rqt = cnx.prepareStatement(SELECT_CATEGORIE);
 			//rqt.setInt(1, );
 			ResultSet rs = rqt.executeQuery();
-			//System.out.println(rs.wasNull());
 			int d=0;
 			if (rs.next()) {
 				do{
 					d++;
 					categ = new Categorie(rs.getInt("noCategorie"), rs.getString("libelle"));
-					//System.out.println(categ);
 					categArray.add(categ);	
 				}while(rs.next());
 				
 		
 			}
-			System.out.println(d);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -246,7 +268,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 
 			if (rs.next()) {
 				do {
-
 					article = new ArticleVendu(
 							rs.getInt("noArticle"),
 							rs.getString("nomArticle"),
@@ -261,17 +282,99 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 					listeArticle.add(article);
 				}while(rs.next());
 			}
+			
 			cnx.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return listeArticle;
 	}
+
+	@Override
+	public Enchere selectDetailEnchere(int noArticle) {
+		Connection cnx = null;
+		Enchere e1 = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_DETAIL_ENCHERE);
+			rqt.setInt(1, noArticle);
+			ResultSet rs = rqt.executeQuery();
+			if(rs.next()) {
+				e1 = new Enchere(rs.getDate("dateEnchere").toLocalDate(), rs.getInt("montantEnchere"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return e1;
+	}
+	
+	@Override
+	public ArticleVendu selectArticleNo(int noArticle) {
+		Connection cnx = null;
+		ArticleVendu a1 = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_ARTICLE_NO);
+			rqt.setInt(1, noArticle);
+			ResultSet rs = rqt.executeQuery();
+			if(rs.next()) {
+				
+				a1 = new ArticleVendu(
+						rs.getInt("noArticle"),
+						rs.getString("nomArticle"),
+						rs.getString("description"),
+						rs.getDate("dateDebutEncheres").toLocalDate(),
+						rs.getDate("dateFinEncheres").toLocalDate(),
+						rs.getInt("prixInitial"),
+						rs.getInt("prixVente"),
+						rs.getBoolean("etatVente"), 
+						rs.getInt("noUtilisateur"), 
+						rs.getInt("noCategorie")); 
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return a1;
+	}
+
+	@Override
+	public Categorie selectCategorieNo(int noCategorie) {
+		Connection cnx = null;
+		Categorie c1 = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_CATEGORIE_NO);
+			rqt.setInt(1, noCategorie);
+			ResultSet rs = rqt.executeQuery();
+			if(rs.next()) {
+				
+				c1 = new Categorie(noCategorie, rs.getString("libelle"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return c1;
+	}
 	
 	
 	
-	
-	
+	@Override
+	public Retrait selectRetraitNo(int noArticle) {
+		Connection cnx = null;
+		Retrait r1 = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_RETRAIT_NO);
+			rqt.setInt(1, noArticle);
+			ResultSet rs = rqt.executeQuery();
+			if(rs.next()) {				
+				r1 = new Retrait(rs.getString("rue"), rs.getString("codePostal"), rs.getString("ville"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return r1;
+	}
 
 	@Override
 	public void updateUtilisateur(Utilisateur utilisateur) {
@@ -307,5 +410,48 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		
 	}
 
+	@Override
+	public int updateEnchere(int noArticle,int noUtilisateur, int montantEnchere) {
+		Connection cnx = null;
+		int res = -1;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement requete = cnx.prepareStatement(UPDATE_ENCHERE);
+			
+			requete.setInt(1, montantEnchere);
+			requete.setInt(2, noUtilisateur);
+			requete.setInt(3, montantEnchere);
+			requete.setInt(4, noArticle);
+			res = requete.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(res);
+		return res;
+	}
+
+	@Override
+	public void updateUtilisateurCredit(int noUtilisateur, int montant) {
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement requete = cnx.prepareStatement(UPDATE_UTILISATEUR_CREDIT);
+			requete.setInt(1, montant);
+			requete.setInt(2, noUtilisateur);
+			requete.setInt(3, montant);
+			requete.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+
+	
 
 }

@@ -44,8 +44,6 @@ public class AccueilServlet extends HttpServlet {
 		List<ArticleVendu> listeArticles = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
 		request.setAttribute("listeArticles", listeArticles);
-	
-
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
 		if (rd!=null) {
 			rd.forward(request, response);
