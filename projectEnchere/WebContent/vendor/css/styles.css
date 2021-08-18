@@ -98,6 +98,19 @@ body{
 		padding: unset!important;
 	}
 }
+.dash-height{
+	height : 100% !important;
+	position:fixed
+}
+
+
+.admin-body{
+	background-color : #5a648a
+}
+.h1-admin{
+	
+	font-weight : bold;
+}
 
 <!-- Connexion -->
 #divForm{
