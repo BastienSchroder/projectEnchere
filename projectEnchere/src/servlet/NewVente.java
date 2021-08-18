@@ -73,7 +73,7 @@ public class NewVente extends HttpServlet {
 				datestart,
 				dateend,
 				prixBase,
-				false,
+				true,
 				(int) session.getAttribute("noUtilisateur"),
 				noCateg
 					
@@ -96,7 +96,9 @@ public class NewVente extends HttpServlet {
 				);
 		mgr.insertEnchere(enchere);
 		
-		response.sendRedirect("/projectEnchere/accueil");
+
+		response.sendRedirect("accueil");
+
 
 		
 	}

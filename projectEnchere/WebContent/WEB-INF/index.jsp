@@ -27,8 +27,8 @@
 		<div class="row">
 			<h2>Filtres : </h2>
 			<form class="d-flex col-6 col-sm-3 " action="<%= request.getContextPath()%>/accueil" method="POST">
-			      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			      <button class="btn btn-outline-success" type="submit">Search</button>
+			      <input class="form-control me-2" type="text" placeholder="Mot clé" aria-label="Search" name="nomArticleRechercher">
+			      <button class="btn btn-outline-success" type="submit">Rechercher</button>
 			</form>
 		</div>
 		<br/>
@@ -38,12 +38,11 @@
 				<p>Catégorie </p>
 			</div>
 			<div class="col-6 col-sm-3">
-				<select class="form-select" aria-label="Default select example">
-			  		<option selected>-- Catégorie --</option>
+				<select class="form-select" aria-label="Default select example" name="selectNumCat">
+			  		<option selected value=0>-- Catégorie --</option>
 			  		<%for (int i = 0; i < cl.size(); i++) {
 			  		    Categorie categ = cl.get(i);
 			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
-			  		    
 			  		}%> 
 				</select>
 			</div>
@@ -51,6 +50,8 @@
 		</div>
 		<div class="row">
 			<div class="col">
+					 <% if(session.getAttribute("noUtilisateur") != null) { %>
+
 				<div class="form-check ">
 					  <input class="form-check-input" type="checkbox" value="" id="achat">
 					  <label class="form-check-label" for="achat">
@@ -58,19 +59,19 @@
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="bidOpen" id="bidOpen" disabled>
-					  <label class="form-check-label" for="bidOpen">
+					  <input name="filtreEncheresOuvertes" class="form-check-input" type="checkbox" value="bidOpen" id="bidOpen" disabled>
+					  <label class="form-check-label" for="bidOpen" >
 					    Enchères ouvertes
 					  </label>
 				</div>
 				<div class="form-check margin-check">	  
-					  <input class="form-check-input" type="checkbox" value="bidInProgress" id="bidInProgress" disabled>
+					  <input name="filtreMesEncheresEnCours" class="form-check-input" type="checkbox" value="bidInProgress" id="bidInProgress" disabled>
 					  <label class="form-check-label" for="bidInProgress">
 					    Mes enchères en cours
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="bidWon" id="bidWon" disabled>
+					  <input name="filtreEnchereRemporte" class="form-check-input" type="checkbox" value="bidWon" id="bidWon" disabled>
 					  <label class="form-check-label" for="bidWon">
 					    Mes enchères remportées
 					  </label>
@@ -84,37 +85,37 @@
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="sellInProgress" id="sellInProgress" disabled>
+					  <input name="filtreMesVentesEnCours"  class="form-check-input" type="checkbox" value="sellInProgress" id="sellInProgress" disabled>
 					  <label class="form-check-label" for="sellInProgress">
 					    Mes ventes en cours
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="sellNotStarted" id="sellNotStarted" disabled>
+					  <input name="filtreMesVentesNonDebutees"  class="form-check-input" type="checkbox" value="sellNotStarted" id="sellNotStarted" disabled>
 					  <label class="form-check-label" for="sellNotStarted">
 					    Ventes non débutées
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="" id="sellEnded" disabled>
+					  <input name="filtreMesVentesTerminees"  class="form-check-input" type="checkbox" value="sellEnded" id="sellEnded" disabled>
 					  <label class="form-check-label" for="sellEnded">
 					    Ventes terminées
 					  </label>
 				</div>
+				 <% } %>
 			</div>
 			<div class="col">
-			<a href="#" class="btn btn-primary btn-lg " tabindex="-1" role="button" >Rechercher</a>
+			<input type="submit" class="btn btn-primary btn-lg " tabindex="-1" value="Rechercher" >
 			</div>
-			<div class="col">
-			</div>
+			
 		</div>
 		</form>
 		<div class="row mt-5">
 		<%
 		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
 		for(ArticleVendu article : listeArticles){
-			if(!article.isEtatVente()){
 		%>
+		<input type="hidden" name="dateFinEnchere" value="<%= article.getDateFinEncheres()%>">
 		
             <div class="card mb-3 single-enchere" style="max-width: 540px;">
             <a id="divDetailVente" href="<%= request.getContextPath()%>/detail-vente?noArticle=<%= article.getNoArticle()%>">
@@ -134,7 +135,7 @@
             </a></div>
         
            	<%
-		}
+			
 			}
 	%>
 	</div>

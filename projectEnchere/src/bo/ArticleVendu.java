@@ -70,6 +70,43 @@ public class ArticleVendu {
 
 
 
+
+
+
+	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, int prixInitiale, int prixVente, boolean etatVente, int noUtilisateur,
+			int noCategorie, String pseudo) {
+		super();
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.prixInitiale = prixInitiale;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
+		this.noUtilisateur = noUtilisateur;
+		this.noCategorie = noCategorie;
+		this.pseudo = pseudo;
+	}
+	
+	
+
+
+
+	public ArticleVendu(String nomArticle, String description, LocalDate dateFinEncheres, int prixInitiale,
+			int noCategorie,int noArticle) {
+		super();
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateFinEncheres = dateFinEncheres;
+		this.prixInitiale = prixInitiale;
+		this.noCategorie = noCategorie;
+		this.noArticle = noArticle;
+	}
+
+
+
 	public int getNoArticle() {
 		return noArticle;
 	}
@@ -145,9 +182,12 @@ public class ArticleVendu {
 	public String toString() {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres
-				+ ", prixInitiale=" + prixInitiale + ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+				+ ", prixInitiale=" + prixInitiale + ", prixVente=" + prixVente + ", etatVente=" + etatVente
+				+ ", noUtilisateur=" + noUtilisateur + ", noCategorie=" + noCategorie + ", pseudo=" + pseudo + "]";
 	}
-	
+
+
+
 	
 	
 	

@@ -5,13 +5,11 @@
 <%@ page import="bo.Categorie" %>
 <%@ page import="bo.Retrait" %>
 <%@ page import="bo.Utilisateur" %>
-<%@ page import="java.time.LocalDate" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Détail vente</title>
+<title>Remporter vente</title>
 <%@include file="require/head.jsp" %>
 
 </head>
@@ -27,9 +25,9 @@ Utilisateur dernierEncherisseur = (Utilisateur) request.getAttribute("dernierEnc
 %>
 <form action="<%= request.getContextPath()%>/encherir" method="POST">
 	<div class="row body">
-		<h2 class="text-center mb-5 list-title h1">Détail vente</h2>
-		<div class="container">
+ 		<div class="container">
 			<div class=" row box-shadow margin-div">
+				<h2 class="text-center h2">Vous avez remporté la vente</h2>
 				<input type="hidden" name="noArticle" value="<%= article.getNoArticle() %>">
 				
 					<div class="col-4">
@@ -37,41 +35,30 @@ Utilisateur dernierEncherisseur = (Utilisateur) request.getAttribute("dernierEnc
 					</div>
 					<div class="col-6">
 						<h3 class="mb-3"><%= article.getNomArticle() %></h3>
-						<p><b>Description du produit : </b></p>
-						<%= article.getDescription() %>
-						<p class="mb-3"><b>Catégorie : </b>
-						<%= categorie.getLibelle() %></p>
+						<p><b>Description du produit : </b>
+						<%= article.getDescription() %></p>
 						<p class="mb-3"><b>Meilleure offre : </b>
-						<%= enchere.getMontantEnchere() %> points par <%=dernierEncherisseur.getPseudo()%></p>
+						<%= enchere.getMontantEnchere() %> points</p>
 						<p class="mb-3"><b>Mise à prix : </b>
-						<%= article.getPrixInitiale() %></p>
-						<p class="mb-3"><b>Fin de l'enchère : </b>
-						<%= article.getDateFinEncheres() %></p>
+						<%= article.getPrixInitiale() %> points</p>
 						<p class="mb-3"><b>Retrait : </b>
 						<%= retrait.getRue() %> <br><%= retrait.getCodePostal() + "-" + retrait.getVille()%> </p>
 						<p class="mb-3"><b>Vendeur : </b>
-						<%= article.getPseudo() %> </p>
-			
-			
-							<label for="encherir" class="m"><b>Ma proposition : </b></label>
-							<div class="input-group mb-3">
-			  					<input name="montantEnchere" type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2"  <%= session.getAttribute("noUtilisateur").equals(article.getNoUtilisateur()) ? "disabled" : "" %> >
-			  					<input type="submit" class="btn btn-outline-success"  id="button-addon2" value="Enchérir" <%= session.getAttribute("noUtilisateur").equals(article.getNoUtilisateur()) ? "disabled" : "" %>>
-							</div>
-							<input type="hidden" name="credit" value="<%= utilisateur.getCredit() %>">
-							<label>Crédits : <%= utilisateur.getCredit() %></label>		
-							<% 
-							if(session.getAttribute("noUtilisateur").equals(article.getNoUtilisateur()) && LocalDate.now().isBefore(article.getDateDebutEncheres())){
-							%>
-							<div>
-            					<a  href="<%= request.getContextPath()%>/modifier-vente?noArticle=<%= article.getNoArticle()%>">Modifier vente</a>
-							</div>
-							<%} %>
+						<%= utilisateur.getPseudo() %> </p>
+						<p class="mb-3"><b>Téléphone : </b>
+						<%= utilisateur.getTelephone() %> </p>
+						<label>Crédits : <%= utilisateur.getCredit() %></label>	
+				</div>				
 			</div>
-			
-			
 		</div>
 	</div>	
 </form>
+<div>
+<form action="<%= request.getContextPath()%>/retrait" method="POST">
+<input type="submit" name="retrait" value="Retrait">
+<input type="hidden" name="noArticle" value="<%= article.getNoArticle() %>">
+</form>
+</div>
+
 </body>
 </html>

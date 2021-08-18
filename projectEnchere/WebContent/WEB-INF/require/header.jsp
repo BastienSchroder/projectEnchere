@@ -26,13 +26,10 @@
             <a class="nav-link active" aria-current="page" href="/projectEnchere/inscription">Inscription</a>
           </li>
           <% } %>
+          <% if(session.getAttribute("noUtilisateur") != null) { %>
           <li class="nav-item">
             <a class="nav-link active" href="/projectEnchere/new-vente">Vendre un article</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/projectEnchere/detail-vente">Détail vente</a>
-          </li>
-          <% if(session.getAttribute("noUtilisateur") != null) { %>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/projectEnchere/profil">Mon profil</a>
           </li>

@@ -1,4 +1,5 @@
 package dal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import bo.ArticleVendu;
 import bo.Categorie;
@@ -27,5 +28,13 @@ public interface EnchereDAO {
 	public ArrayList<Utilisateur> selectAllUtilisateur();
 	public void deleteCategorie(int noCategorie);
 	public void insertCategorie(Categorie categ);
+	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur);
+	public void modifEnchereArticle(ArticleVendu article);
+	public void modifEnchereRetrait(Retrait retrait);
+	public void deleteEnchere(int noArticle);
+	public void updateEtatVente(int noArticle);
+	ArrayList<ArticleVendu> selectEnchereUtilisateur(int noUtilisateur);
+	public List<ArticleVendu> rechercheNomArticle(String nomArticle);
+	public List<ArticleVendu> selectArticleParNoCat (int noCat);
 
 }
