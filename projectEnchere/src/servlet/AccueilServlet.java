@@ -50,13 +50,15 @@ public class AccueilServlet extends HttpServlet {
 		List<ArticleVendu> listeArticles = new ArrayList<>();
 		List<ArticleVendu> listeArticlesFiltre = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
-		
+		System.out.println(listeArticles);
+
 		List<ArticleVendu> attribut = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
 		if (attribut != null && !attribut.isEmpty()) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
 		}else if(request.getAttribute("listeEnchereRemporte") != null) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
 		} else if (request.getAttribute("listeArticleRetourner") != null) {
+			System.out.println("ici");
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRetourner");
 		}
 
@@ -149,8 +151,10 @@ public class AccueilServlet extends HttpServlet {
 		}
 		if (request.getParameter("selectNumCat") != null) {
 			formSelect = Integer.valueOf(request.getParameter("selectNumCat"));
-			List<ArticleVendu> listeArticleCat = (List<ArticleVendu>) mgr.selectArticleParNoCat(formSelect);
-			request.setAttribute("listeArticleRetourner", listeArticleCat);
+			if(formSelect > 0) {
+				List<ArticleVendu> listeArticleCat = (List<ArticleVendu>) mgr.selectArticleParNoCat(formSelect);
+				request.setAttribute("listeArticleRetourner", listeArticleCat);
+			}
 		}
 		
 		if (session.getAttribute("noUtilisateur") != null) {
