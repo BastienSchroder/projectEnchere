@@ -84,4 +84,24 @@ public class EnchereManager {
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur){
 		return this.enchereDAO.selectEnchereRemporte(noUtilisateur);
 	}
+	
+	public void modifEnchere(ArticleVendu article, Retrait retrait) {
+		this.enchereDAO.modifEnchereArticle(article);
+		this.enchereDAO.modifEnchereRetrait(retrait);
+	}
+
+	public void deleteEnchere(int noArticle) {
+		this.enchereDAO.deleteEnchere(noArticle);
+	}
+	
+	public void updateEtatVente(int noArticle) {
+		this.enchereDAO.updateEtatVente(noArticle);
+	}
+
+	public ArrayList<ArticleVendu> selectEnchereEnCours(int noUtilisateur) {
+		return this.enchereDAO.selectEnchereUtilisateur(noUtilisateur);
+	}
+
+
+	
 }

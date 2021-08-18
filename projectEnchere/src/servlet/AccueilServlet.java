@@ -19,6 +19,7 @@ import org.apache.jasper.tagplugins.jstl.core.Out;
 
 import bll.EnchereManager;
 import bo.Categorie;
+import bo.Enchere;
 import bo.ArticleVendu;
 
 
@@ -41,19 +42,79 @@ public class AccueilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
+		HttpSession session = request.getSession();
 		EnchereManager mgr = new EnchereManager();
-		//int noUtilisateur = 1;
-		
 		ArrayList<Categorie> categ = mgr.selectCategorie();
 		request.setAttribute("Categorie", categ);
 
 		List<ArticleVendu> listeArticles = new ArrayList<>();
+		List<ArticleVendu> listeArticlesFiltre = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
+		
+		//Mes encheres remportees
 		if(request.getAttribute("listeEnchereRemporte") != null) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
 		}
+
+		//Mes encheres en cours
+		if(request.getAttribute("listeMesEncheresEnCours") != null) {
+			System.out.println("Liste aza"+request.getAttribute("listeMesEncheresEnCours"));
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeMesEncheresEnCours");
+			System.out.println(listeArticles);
+		}
+		
+		//Encheres ouvertes
+		if(request.getAttribute("filtreEncheresOuvertes") != null) {
+			for(ArticleVendu article : listeArticles) {
+				if(article.getDateFinEncheres().isAfter(LocalDate.now())) {
+					listeArticlesFiltre.add(article);
+				}
+			}
+			listeArticles = listeArticlesFiltre;
+		}
+		
+		//Mes ventes en cours
+		if(request.getAttribute("filtreMesVentesEnCours") != null) {
+			for(ArticleVendu article : listeArticles) {
+				if(article.getNoUtilisateur() == (int) session.getAttribute("noUtilisateur")) {
+					listeArticlesFiltre.add(article);
+				}
+			}
+			listeArticles = listeArticlesFiltre;
+		}
+		
+		//Mes ventes terminées
+		if(request.getAttribute("filtreMesVentesTerminees") != null) {
+			for(ArticleVendu article : listeArticles) {
+				if(article.getNoUtilisateur() == (int) session.getAttribute("noUtilisateur") && article.getDateFinEncheres().isBefore(LocalDate.now())){
+					listeArticlesFiltre.add(article);
+				}
+			}
+			listeArticles = listeArticlesFiltre;
+		}
+		
+		//Mes ventes non débutées
+		if(request.getAttribute("filtreMesVentesNonDebutees") != null) {
+			for(ArticleVendu article : listeArticles) {
+				if(article.getNoUtilisateur() == (int) session.getAttribute("noUtilisateur") && article.getDateDebutEncheres().isAfter(LocalDate.now())){
+					listeArticlesFiltre.add(article);
+				}
+			}
+			listeArticles = listeArticlesFiltre;
+		}
+		
+		//Mes enchères en cours
+		if(request.getAttribute("filtreMesEncheresEnCours") != null) {
+			for(ArticleVendu article : listeArticles) {
+				if(article.getDateFinEncheres().isAfter(LocalDate.now())){
+					listeArticlesFiltre.add(article);
+				}
+			}
+			listeArticles = listeArticlesFiltre;
+		}
+		
+	
+		
 		request.setAttribute("listeArticles", listeArticles);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
 		if (rd!=null) {
@@ -69,13 +130,30 @@ public class AccueilServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		String filtreEnchereRemporte = request.getParameter("filtreEnchereRemporte");
+		String filtreEncheresOuvertes = request.getParameter("filtreEncheresOuvertes");
+		String filtreMesVentesEnCours = request.getParameter("filtreMesVentesEnCours");
+		String filtreMesVentesTerminees = request.getParameter("filtreMesVentesTerminees");
+		String filtreMesVentesNonDebutees = request.getParameter("filtreMesVentesNonDebutees");
+		String filtreMesEncheresEnCours = request.getParameter("filtreMesEncheresEnCours");
+		
 		int noUtilisateur = (int) session.getAttribute("noUtilisateur");
-		ArrayList<ArticleVendu> listeEnchereRemporte = null;
+		ArrayList<ArticleVendu> listeEnchere = null;
 		EnchereManager mgr = new EnchereManager();
+		
 		if(filtreEnchereRemporte != null) {
-			listeEnchereRemporte = mgr.selectEnchereRemporte(noUtilisateur);
-			request.setAttribute("listeEnchereRemporte", listeEnchereRemporte);
+			listeEnchere = mgr.selectEnchereRemporte(noUtilisateur);
+			request.setAttribute("listeEnchereRemporte", listeEnchere);
 		}
+		
+		if(filtreMesEncheresEnCours != null) {
+			listeEnchere = mgr.selectEnchereEnCours(noUtilisateur);
+			request.setAttribute("listeMesEncheresEnCours", listeEnchere);
+		}
+		
+		request.setAttribute("filtreEncheresOuvertes", filtreEncheresOuvertes);
+		request.setAttribute("filtreMesVentesEnCours", filtreMesVentesEnCours);
+		request.setAttribute("filtreMesVentesTerminees", filtreMesVentesTerminees);
+		request.setAttribute("filtreMesVentesNonDebutees", filtreMesVentesNonDebutees);
 		doGet(request, response);
 	}
 

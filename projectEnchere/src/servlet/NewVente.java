@@ -73,7 +73,7 @@ public class NewVente extends HttpServlet {
 				datestart,
 				dateend,
 				prixBase,
-				false,
+				true,
 				(int) session.getAttribute("noUtilisateur"),
 				noCateg
 					

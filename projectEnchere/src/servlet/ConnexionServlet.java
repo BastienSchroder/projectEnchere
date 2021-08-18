@@ -65,7 +65,7 @@ public class ConnexionServlet extends HttpServlet {
 		}
 		if(u1 != null) {
 			session.setAttribute("noUtilisateur", u1.getNoUtilisateur());
-			session.setMaxInactiveInterval(60*5);
+			session.setMaxInactiveInterval(60*30);
 			response.sendRedirect("accueil");
 		}else {
 			response.sendRedirect("connexion");

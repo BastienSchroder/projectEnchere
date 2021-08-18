@@ -89,6 +89,21 @@ public class ArticleVendu {
 		this.noCategorie = noCategorie;
 		this.pseudo = pseudo;
 	}
+	
+	
+
+
+
+	public ArticleVendu(String nomArticle, String description, LocalDate dateFinEncheres, int prixInitiale,
+			int noCategorie,int noArticle) {
+		super();
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateFinEncheres = dateFinEncheres;
+		this.prixInitiale = prixInitiale;
+		this.noCategorie = noCategorie;
+		this.noArticle = noArticle;
+	}
 
 
 
@@ -167,9 +182,12 @@ public class ArticleVendu {
 	public String toString() {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres
-				+ ", prixInitiale=" + prixInitiale + ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+				+ ", prixInitiale=" + prixInitiale + ", prixVente=" + prixVente + ", etatVente=" + etatVente
+				+ ", noUtilisateur=" + noUtilisateur + ", noCategorie=" + noCategorie + ", pseudo=" + pseudo + "]";
 	}
-	
+
+
+
 	
 	
 	

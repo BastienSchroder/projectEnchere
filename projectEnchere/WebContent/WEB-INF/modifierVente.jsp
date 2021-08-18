@@ -25,7 +25,7 @@ Retrait retrait = (Retrait) request.getAttribute("retrait");
 Utilisateur utilisateur = (Utilisateur) request.getAttribute("utilisateur");
 ArrayList<Categorie> listeCategories = (ArrayList<Categorie>)request.getAttribute("listeCategories");
 %>
-<form action="<%= request.getContextPath()%>/encherir" method="POST">
+<form action="<%= request.getContextPath()%>/modifier-vente" method="POST">
 	<div class="row body">
 		<h2 class="text-center mb-5 list-title h1">Détail vente</h2>
 		<div class="container">
@@ -36,12 +36,13 @@ ArrayList<Categorie> listeCategories = (ArrayList<Categorie>)request.getAttribut
 						<img src="..." srcset="https://images.unsplash.com/photo-1503602642458-232111445657?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1834&q=80" class="img-fluid" alt="...">
 					</div>
 					<div class="col-6">
-						<h3 class="mb-3"><%= article.getNomArticle() %></h3>
+						<p><b>Nom article : </b></p>
+						<input type="text" name="nomArticle" id="nomArticle" value="<%= article.getNomArticle() %>">
 						<p><b>Description du produit : </b></p>
 						<input type="text" name="description" value="<%= article.getDescription() %>">
 						</p class="mb-3"><b>Catégorie : </b>
 				<select id="selectCategorie" name="selectCategorie" class="form-select" >
-			  		<option selected><%= categorie.getLibelle() %></option>
+			  		<option value="<%= categorie.getNoCategorie() %>" selected><%= categorie.getLibelle() %></option>
 			  			<%
 			  			for(Categorie c1 : listeCategories){
 			  				if(!c1.getLibelle().equals(categorie.getLibelle())){
@@ -51,8 +52,7 @@ ArrayList<Categorie> listeCategories = (ArrayList<Categorie>)request.getAttribut
 			  			}}
 			  			%>
 				</select>
-						</p class="mb-3"><b>Meilleure offre : </b>
-						<input type="text" name="meilleureOffre" value="<%=  enchere.getMontantEnchere()  %>">
+						
 						</p class="mb-3"><b>Mise à prix : </b>
 						<input type="text" name="miseAPrix" value="<%=   article.getPrixInitiale()  %>">
 						</p class="mb-3"><b>Fin de l'enchère : </b>
@@ -64,15 +64,19 @@ ArrayList<Categorie> listeCategories = (ArrayList<Categorie>)request.getAttribut
 						<input type="text" name="ville" value="<%= retrait.getVille()%>">
 						<p class="mb-3"><b>Vendeur : </b></p>
 						<p><%= utilisateur.getPseudo() %> </p>
-			
-			
-							<label for="encherir" class="m"><b>Ma proposition : </b></label>
-							<div class="input-group mb-3">
-			  					<input name="montantEnchere" type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2"  <%= session.getAttribute("noUtilisateur").equals(utilisateur.getNoUtilisateur()) ? "disabled" : "" %> >
-			  					<input type="submit" class="btn btn-outline-success"  id="button-addon2" value="Enchérir" <%= session.getAttribute("noUtilisateur").equals(utilisateur.getNoUtilisateur()) ? "disabled" : "" %>>
-							</div>
-							<input type="hidden" name="credit" value="<%= utilisateur.getCredit() %>">
-							<label>Crédits : <%= utilisateur.getCredit() %></label>				
+						<label for="encherir" class="m"><b>Ma proposition : </b></label>
+						<div class="input-group mb-3">
+		  					<input name="montantEnchere" type="number" class="form-control"  value="<%=enchere.getMontantEnchere() %>" aria-label="Recipient's username" aria-describedby="button-addon2"  <%= session.getAttribute("noUtilisateur").equals(utilisateur.getNoUtilisateur()) ? "disabled" : "" %> >
+		  					<input type="submit" class="btn btn-outline-success"  id="button-addon2" value="Enchérir" <%= session.getAttribute("noUtilisateur").equals(utilisateur.getNoUtilisateur()) ? "disabled" : "" %>>
+						</div>
+						<input type="hidden" name="credit" value="<%= utilisateur.getCredit() %>">
+						<label>Crédits : <%= utilisateur.getCredit() %></label>	
+						<div>
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>		
+						<div>
+							<input type="submit" name="supprimer" class="btn btn-outline-secondary btn-lg" value="Supprimer enchere">
+						</div>		
 			</div>
 		</div>
 	</div>	

@@ -40,7 +40,7 @@
 			  		<option selected>-- Catégorie --</option>
 			  		<%for (int i = 0; i < cl.size(); i++) {
 			  		    Categorie categ = cl.get(i);
-			  		  %><option value="<%= categ.getLibelle()%>"><%= categ.getLibelle()%></option><%
+			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
 			  		    
 			  		}%> 
 				</select>
@@ -58,13 +58,13 @@
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="bidOpen" id="bidOpen" disabled>
-					  <label class="form-check-label" for="bidOpen">
+					  <input name="filtreEncheresOuvertes" class="form-check-input" type="checkbox" value="bidOpen" id="bidOpen" disabled>
+					  <label class="form-check-label" for="bidOpen" >
 					    Enchères ouvertes
 					  </label>
 				</div>
 				<div class="form-check margin-check">	  
-					  <input class="form-check-input" type="checkbox" value="bidInProgress" id="bidInProgress" disabled>
+					  <input name="filtreMesEncheresEnCours" class="form-check-input" type="checkbox" value="bidInProgress" id="bidInProgress" disabled>
 					  <label class="form-check-label" for="bidInProgress">
 					    Mes enchères en cours
 					  </label>
@@ -84,19 +84,19 @@
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="sellInProgress" id="sellInProgress" disabled>
+					  <input name="filtreMesVentesEnCours"  class="form-check-input" type="checkbox" value="sellInProgress" id="sellInProgress" disabled>
 					  <label class="form-check-label" for="sellInProgress">
 					    Mes ventes en cours
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="sellNotStarted" id="sellNotStarted" disabled>
+					  <input name="filtreMesVentesNonDebutees"  class="form-check-input" type="checkbox" value="sellNotStarted" id="sellNotStarted" disabled>
 					  <label class="form-check-label" for="sellNotStarted">
 					    Ventes non débutées
 					  </label>
 				</div>
 				<div class="form-check margin-check">
-					  <input class="form-check-input" type="checkbox" value="" id="sellEnded" disabled>
+					  <input name="filtreMesVentesTerminees"  class="form-check-input" type="checkbox" value="sellEnded" id="sellEnded" disabled>
 					  <label class="form-check-label" for="sellEnded">
 					    Ventes terminées
 					  </label>
@@ -114,7 +114,6 @@
 		<%
 		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
 		for(ArticleVendu article : listeArticles){
-			if(!article.isEtatVente()){
 		%>
 		<input type="hidden" name="dateFinEnchere" value="<%= article.getDateFinEncheres()%>">
 		
@@ -136,7 +135,7 @@
             </a></div>
         
            	<%
-		}
+			
 			}
 	%>
 	</div>

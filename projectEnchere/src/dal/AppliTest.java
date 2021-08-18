@@ -1,25 +1,23 @@
 package dal;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+
 import bo.Utilisateur;
 
 public class AppliTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		EnchereDAO e = DAOFactory.getEnchereDAO();
-		
-		Utilisateur u1 = new Utilisateur("axel","axel","axel","axel","axel","axel","axel","axel","axel",5,true);
 		try {
-			e.insertUtilisateur(u1);
-		} catch (Exception e2) {
-			// TODO: handle exception
-			e2.printStackTrace();
+			Files.write(Paths.get("./WebContent/WEB-INF/test.txt"), "on est la".getBytes(), StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		Utilisateur u2 = e.selectUtilisateur(1);
-		System.out.println(u2);
-		
-		
 	}
 
 }

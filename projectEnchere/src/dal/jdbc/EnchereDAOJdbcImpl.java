@@ -36,7 +36,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String SELECT_ARTICLE = "SELECT TOP 1 * FROM ARTICLES_VENDUS ORDER BY noArticle DESC";
 	private static final String SELECT_CONNEXION = "SELECT * FROM UTILISATEURS WHERE (email=? OR pseudo=?) AND motDePasse=?";
 	private static final String DELETE_PROFIL = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
-	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur ";
+	private static final String DELETE_ENCHERE = "DELETE FROM ARTICLES_VENDUS WHERE noArticle = ?";
+	private static final String SELECT_ARTICLES = "SELECT * from ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE etatVente=1";
 	private static final String SELECT_DETAIL_ENCHERE = "SELECT * from  ENCHERES WHERE noArticle = ?";
 	private static final String SELECT_ARTICLE_NO = "SELECT * from  ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE noArticle = ?";
 	private static final String SELECT_CATEGORIE_NO = "SELECT * from CATEGORIES WHERE noCategorie = ?";
@@ -45,8 +46,11 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
     private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montantEnchere=?, noUtilisateur=? WHERE montantEnchere < ? AND noArticle=?";
     private static final String UPDATE_UTILISATEUR_CREDIT = "UPDATE UTILISATEURS SET credit=credit-? WHERE  noUtilisateur=? AND credit-?>=0";
     private static final String SELECT_ENCHERE_REMPORTE = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle  INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateFinEncheres,GETDATE()) >= 0";
+    private static final String SELECT_ENCHERE_EN_COURS = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateDebutEncheres,GETDATE()) <= 0";
     private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nomArticle=?, description=?, dateFinEncheres=?, prixInitial=?, prixVente=? ,noCategorie=? WHERE noArticle=?;";
-	
+    private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue=?, codePostal=?, ville=? WHERE noArticle=?;";
+    private static final String UPDATE_ETAT_VENTE = "UPDATE ARTICLES_VENDUS SET etatVEnte=0 WHERE noArticle=?;";
+
     @Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
 		Connection cnx = null;
@@ -278,7 +282,9 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 							rs.getDate("dateFinEncheres").toLocalDate(),
 							rs.getInt("prixInitial"),
 							rs.getInt("prixVente"),
-							rs.getBoolean("etatVente"), 
+							rs.getBoolean("etatVente"),
+							rs.getInt("noUtilisateur"),
+							rs.getInt("noCategorie"),
 							rs.getString("pseudo"));
 
 					listeArticle.add(article);
@@ -302,7 +308,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			rqt.setInt(1, noArticle);
 			ResultSet rs = rqt.executeQuery();
 			if(rs.next()) {
-				e1 = new Enchere(rs.getDate("dateEnchere").toLocalDate(), rs.getInt("montantEnchere"));
+				e1 = new Enchere(rs.getDate("dateEnchere").toLocalDate(), rs.getInt("montantEnchere"),rs.getInt("noUtilisateur"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -454,8 +460,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 
 	@Override
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
 				ArrayList<ArticleVendu> listeEnchereRemporte = new ArrayList<>();
 				Connection cnx = null;
 				ArticleVendu article = null;
@@ -486,6 +490,122 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				}
 				return listeEnchereRemporte;
 	}
+
+	@Override
+	public void modifEnchereArticle(ArticleVendu article) {
+		Connection cnx = null;
+		try {
+			Timestamp datefin = Timestamp.valueOf(article.getDateFinEncheres().atStartOfDay());
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(UPDATE_ARTICLE);
+			rqt.setString(1, article.getNomArticle());
+			rqt.setString(2, article.getDescription());
+			rqt.setTimestamp(3, datefin);
+			rqt.setInt(4, article.getPrixInitiale());
+			rqt.setInt(5, article.getPrixVente());
+			rqt.setInt(6, article.getNoCategorie());
+			rqt.setInt(7, article.getNoArticle());
+
+			rqt.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void modifEnchereRetrait(Retrait retrait) {
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(UPDATE_RETRAIT);
+			rqt.setString(1, retrait.getRue());
+			rqt.setString(2, retrait.getCodePostal());
+			rqt.setString(3, retrait.getVille());
+			rqt.setInt(4, retrait.getNoArticle());
+			rqt.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public void deleteEnchere(int noArticle) {
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(DELETE_ENCHERE);
+			rqt.setInt(1, noArticle);
+			rqt.executeUpdate();
+			cnx.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+
+	@Override
+	public void updateEtatVente(int noArticle) {
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement requete = cnx.prepareStatement(UPDATE_ETAT_VENTE);
+			requete.setInt(1, noArticle);
+			requete.executeUpdate();
+			cnx.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
+	public ArrayList<ArticleVendu> selectEnchereUtilisateur(int noUtilisateur) {
+		Connection cnx = null;
+		ArticleVendu article = null;
+		ArrayList<ArticleVendu> listeEnchere = new ArrayList<>();
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_ENCHERE_EN_COURS);
+			rqt.setInt(1, noUtilisateur);
+			ResultSet rs = rqt.executeQuery();
+			if(rs.next()) {
+					do {
+						article = new ArticleVendu(
+								rs.getInt("noArticle"),
+								rs.getString("nomArticle"),
+								rs.getString("description"),
+								rs.getDate("dateDebutEncheres").toLocalDate(),
+								rs.getDate("dateFinEncheres").toLocalDate(),
+								rs.getInt("prixInitial"),
+								rs.getInt("prixVente"),
+								rs.getBoolean("etatVente"), 
+								rs.getInt("noUtilisateur"), 
+								rs.getInt("noCategorie"),
+								rs.getString("pseudo"));
+						
+						listeEnchere.add(article);
+					}while(rs.next());
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return listeEnchere;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
