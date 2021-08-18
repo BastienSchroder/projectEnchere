@@ -85,6 +85,7 @@ public class EnchereManager {
 		return this.enchereDAO.selectEnchereRemporte(noUtilisateur);
 	}
 	
+
 	public void modifEnchere(ArticleVendu article, Retrait retrait) {
 		this.enchereDAO.modifEnchereArticle(article);
 		this.enchereDAO.modifEnchereRetrait(retrait);
@@ -102,6 +103,11 @@ public class EnchereManager {
 		return this.enchereDAO.selectEnchereUtilisateur(noUtilisateur);
 	}
 
-
+	public List<ArticleVendu> rechercheNomArticle(String nomArticle){
+		return this.enchereDAO.rechercheNomArticle(nomArticle);
+	}
 	
+	public List<ArticleVendu> selectArticleParNoCat(int noCat) {
+		return this.enchereDAO.selectArticleParNoCat(noCat);
+	}
 }

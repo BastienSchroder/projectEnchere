@@ -51,6 +51,15 @@ public class AccueilServlet extends HttpServlet {
 		List<ArticleVendu> listeArticlesFiltre = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
 		
+		List<ArticleVendu> attribut = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
+		if (attribut != null && !attribut.isEmpty()) {
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
+		}else if(request.getAttribute("listeEnchereRemporte") != null) {
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
+		} else if (request.getAttribute("listeArticleRetourner") != null) {
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRetourner");
+		}
+
 		//Mes encheres remportees
 		if(request.getAttribute("listeEnchereRemporte") != null) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
@@ -58,9 +67,7 @@ public class AccueilServlet extends HttpServlet {
 
 		//Mes encheres en cours
 		if(request.getAttribute("listeMesEncheresEnCours") != null) {
-			System.out.println("Liste aza"+request.getAttribute("listeMesEncheresEnCours"));
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeMesEncheresEnCours");
-			System.out.println(listeArticles);
 		}
 		
 		//Encheres ouvertes
@@ -76,7 +83,7 @@ public class AccueilServlet extends HttpServlet {
 		//Mes ventes en cours
 		if(request.getAttribute("filtreMesVentesEnCours") != null) {
 			for(ArticleVendu article : listeArticles) {
-				if(article.getNoUtilisateur() == (int) session.getAttribute("noUtilisateur")) {
+				if(article.getNoUtilisateur() == (int) session.getAttribute("noUtilisateur") && article.getDateFinEncheres().isAfter(LocalDate.now()) && article.getDateDebutEncheres().isBefore(LocalDate.now())) {
 					listeArticlesFiltre.add(article);
 				}
 			}
@@ -127,33 +134,55 @@ public class AccueilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		String filtreEnchereRemporte = request.getParameter("filtreEnchereRemporte");
-		String filtreEncheresOuvertes = request.getParameter("filtreEncheresOuvertes");
-		String filtreMesVentesEnCours = request.getParameter("filtreMesVentesEnCours");
-		String filtreMesVentesTerminees = request.getParameter("filtreMesVentesTerminees");
-		String filtreMesVentesNonDebutees = request.getParameter("filtreMesVentesNonDebutees");
-		String filtreMesEncheresEnCours = request.getParameter("filtreMesEncheresEnCours");
-		
-		int noUtilisateur = (int) session.getAttribute("noUtilisateur");
+
 		ArrayList<ArticleVendu> listeEnchere = null;
 		EnchereManager mgr = new EnchereManager();
+		String nomArticleRecherche = request.getParameter("nomArticleRechercher");
+		int formSelect = -1;
+		ArrayList<ArticleVendu> listeEnchereRemporte = null;
 		
-		if(filtreEnchereRemporte != null) {
-			listeEnchere = mgr.selectEnchereRemporte(noUtilisateur);
-			request.setAttribute("listeEnchereRemporte", listeEnchere);
+		if (nomArticleRecherche != null) {
+			List<ArticleVendu> listeArticle = mgr.rechercheNomArticle(nomArticleRecherche);
+			request.setAttribute("nomArticleRecherche", nomArticleRecherche);
+			request.setAttribute("listeArticleRechercher", listeArticle);
+		}
+		if (request.getParameter("selectNumCat") != null) {
+			formSelect = Integer.valueOf(request.getParameter("selectNumCat"));
+			List<ArticleVendu> listeArticleCat = (List<ArticleVendu>) mgr.selectArticleParNoCat(formSelect);
+			request.setAttribute("listeArticleRetourner", listeArticleCat);
 		}
 		
-		if(filtreMesEncheresEnCours != null) {
-			listeEnchere = mgr.selectEnchereEnCours(noUtilisateur);
-			request.setAttribute("listeMesEncheresEnCours", listeEnchere);
+		if (session.getAttribute("noUtilisateur") != null) {
+			int noUtilisateur = (int) session.getAttribute("noUtilisateur");
+			String filtreEnchereRemporte = request.getParameter("filtreEnchereRemporte");
+			String filtreEncheresOuvertes = request.getParameter("filtreEncheresOuvertes");
+			String filtreMesVentesEnCours = request.getParameter("filtreMesVentesEnCours");
+			String filtreMesVentesTerminees = request.getParameter("filtreMesVentesTerminees");
+			String filtreMesVentesNonDebutees = request.getParameter("filtreMesVentesNonDebutees");
+			String filtreMesEncheresEnCours = request.getParameter("filtreMesEncheresEnCours");
+			request.setAttribute("filtreEncheresOuvertes", filtreEncheresOuvertes);
+			request.setAttribute("filtreMesVentesEnCours", filtreMesVentesEnCours);
+			request.setAttribute("filtreMesVentesTerminees", filtreMesVentesTerminees);
+			request.setAttribute("filtreMesVentesNonDebutees", filtreMesVentesNonDebutees);
+			if(filtreEnchereRemporte != null) {
+				listeEnchereRemporte = mgr.selectEnchereRemporte(noUtilisateur);
+				request.setAttribute("listeEnchereRemporte", listeEnchereRemporte);
+			}
+			
+			if(filtreEnchereRemporte != null) {
+				listeEnchere = mgr.selectEnchereRemporte(noUtilisateur);
+				request.setAttribute("listeEnchereRemporte", listeEnchere);
+			}
+			
+			if(filtreMesEncheresEnCours != null) {
+				listeEnchere = mgr.selectEnchereEnCours(noUtilisateur);
+				request.setAttribute("listeMesEncheresEnCours", listeEnchere);
+			}
+			
 		}
 		
-		request.setAttribute("filtreEncheresOuvertes", filtreEncheresOuvertes);
-		request.setAttribute("filtreMesVentesEnCours", filtreMesVentesEnCours);
-		request.setAttribute("filtreMesVentesTerminees", filtreMesVentesTerminees);
-		request.setAttribute("filtreMesVentesNonDebutees", filtreMesVentesNonDebutees);
+		
 		doGet(request, response);
 	}
 

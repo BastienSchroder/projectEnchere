@@ -31,5 +31,6 @@ public interface EnchereDAO {
 	public void deleteEnchere(int noArticle);
 	public void updateEtatVente(int noArticle);
 	ArrayList<ArticleVendu> selectEnchereUtilisateur(int noUtilisateur);
-
+	public List<ArticleVendu> rechercheNomArticle(String nomArticle);
+	public List<ArticleVendu> selectArticleParNoCat (int noCat);
 }
