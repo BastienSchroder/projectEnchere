@@ -26,4 +26,6 @@ public interface EnchereDAO {
 	public int updateEnchere(int noArticle,int noUtilisateur, int montantEnchere);
 	public void updateUtilisateurCredit(int noUtilisateur,int montant);
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur);
+	public List<ArticleVendu> rechercheNomArticle(String nomArticle);
+	public List<ArticleVendu> selectArticleParNoCat (int noCat);
 }

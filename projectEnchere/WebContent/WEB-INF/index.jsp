@@ -25,8 +25,8 @@
 		<div class="row">
 			<h2>Filtres : </h2>
 			<form class="d-flex col-6 col-sm-3 " action="<%= request.getContextPath()%>/accueil" method="POST">
-			      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-			      <button class="btn btn-outline-success" type="submit">Search</button>
+			      <input class="form-control me-2" type="text" placeholder="Mot clé" aria-label="Search" name="nomArticleRechercher">
+			      <button class="btn btn-outline-success" type="submit">Rechercher</button>
 			</form>
 		</div>
 		<br/>
@@ -36,12 +36,12 @@
 				<p>Catégorie </p>
 			</div>
 			<div class="col-6 col-sm-3">
-				<select class="form-select" aria-label="Default select example">
-			  		<option selected>-- Catégorie --</option>
+				<select class="form-select" aria-label="Default select example" name="selectNumCat">
+			  		<option selected value=0>-- Catégorie --</option>
 			  		<%for (int i = 0; i < cl.size(); i++) {
 			  		    Categorie categ = cl.get(i);
-			  		  %><option value="<%= categ.getLibelle()%>"><%= categ.getLibelle()%></option><%
-			  		    
+			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
+		  		    
 			  		}%> 
 				</select>
 			</div>
@@ -106,8 +106,7 @@
 			<div class="col">
 			<input type="submit" class="btn btn-primary btn-lg " tabindex="-1" value="Rechercher" >
 			</div>
-			<div class="col">
-			</div>
+			
 		</div>
 		</form>
 		<div class="row mt-5">

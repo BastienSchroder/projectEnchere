@@ -48,12 +48,19 @@ public class AccueilServlet extends HttpServlet {
 		
 		ArrayList<Categorie> categ = mgr.selectCategorie();
 		request.setAttribute("Categorie", categ);
-
-		List<ArticleVendu> listeArticles = new ArrayList<>();
+		List<ArticleVendu> attribut = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
+		List<ArticleVendu> listeArticles = new ArrayList<>();		
 		listeArticles = mgr.selectArticles();
-		if(request.getAttribute("listeEnchereRemporte") != null) {
+		if (attribut != null && !attribut.isEmpty()) {
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
+		}else if(request.getAttribute("listeEnchereRemporte") != null) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
+		} else if (request.getAttribute("listeArticleRetourner") != null) {
+			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRetourner");
 		}
+		
+		
+		
 		request.setAttribute("listeArticles", listeArticles);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
 		if (rd!=null) {
@@ -67,15 +74,44 @@ public class AccueilServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
+		
 		String filtreEnchereRemporte = request.getParameter("filtreEnchereRemporte");
-		int noUtilisateur = (int) session.getAttribute("noUtilisateur");
+		String nomArticleRecherche = request.getParameter("nomArticleRechercher");
+		int formSelect = 0;
+		
+		
 		ArrayList<ArticleVendu> listeEnchereRemporte = null;
 		EnchereManager mgr = new EnchereManager();
-		if(filtreEnchereRemporte != null) {
-			listeEnchereRemporte = mgr.selectEnchereRemporte(noUtilisateur);
-			request.setAttribute("listeEnchereRemporte", listeEnchereRemporte);
+		
+		if (nomArticleRecherche != null) {
+			List<ArticleVendu> listeArticle = mgr.rechercheNomArticle(nomArticleRecherche);
+			request.setAttribute("nomArticleRecherche", nomArticleRecherche);
+			request.setAttribute("listeArticleRechercher", listeArticle);
 		}
+		
+		if (formSelect != -1) {
+			if (request.getParameter("selectNumCat") != null) {
+				formSelect = Integer.valueOf(request.getParameter("selectNumCat"));
+			}
+			List<ArticleVendu> listeArticleCat = (List<ArticleVendu>) mgr.selectArticleParNoCat(formSelect);
+			request.setAttribute("listeArticleRetourner", listeArticleCat);
+		}
+		
+		if (request.getSession() == null) {
+			HttpSession session = request.getSession();
+			int noUtilisateur = (int) session.getAttribute("noUtilisateur");
+			System.out.println(noUtilisateur);
+		
+			if(filtreEnchereRemporte != null) {
+				listeEnchereRemporte = mgr.selectEnchereRemporte(noUtilisateur);
+				request.setAttribute("listeEnchereRemporte", listeEnchereRemporte);
+			}
+		}
+		
+		
+		
+		
+			
 		doGet(request, response);
 	}
 

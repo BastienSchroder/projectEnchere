@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.sql.Timestamp;
@@ -46,6 +46,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
     private static final String UPDATE_UTILISATEUR_CREDIT = "UPDATE UTILISATEURS SET credit=credit-? WHERE  noUtilisateur=? AND credit-?>=0";
     private static final String SELECT_ENCHERE_REMPORTE = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle  INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateFinEncheres,GETDATE()) >= 0";
     private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nomArticle=?, description=?, dateFinEncheres=?, prixInitial=?, prixVente=? ,noCategorie=? WHERE noArticle=?;";
+    private static final String RECHERCHE_NOM_ARTICLE= "SELECT * FROM ARTICLES_VENDUS WHERE UPPER(nomArticle) = UPPER(?)";
+    private static final String SELECT_ARTICLES_NO_CAT = "SELECT * FROM ARTICLES_VENDUS WHERE noCategorie = ?";
 	
     @Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
@@ -487,9 +489,78 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				return listeEnchereRemporte;
 	}
 	
+	@Override
+	public List<ArticleVendu> rechercheNomArticle(String nomArticle) {
+		
+		Connection cnx = null;
+		ArticleVendu a1 = null;
+		List<ArticleVendu> listeArticle = new ArrayList<>();
+		
+		try {
+			cnx = JdbcTools.getConnection();
+			cnx.setAutoCommit(false);
+			
+			PreparedStatement requete = cnx.prepareStatement(RECHERCHE_NOM_ARTICLE);
+			requete.setString(1, nomArticle);
+			
+			ResultSet rs = requete.executeQuery();
+			
+			if (rs.next()) {
+				do {
+					a1 = new ArticleVendu(
+							rs.getInt("noArticle"), 
+							rs.getString("nomArticle"), 
+							rs.getString("description"), 
+							rs.getDate("dateDebutEncheres").toLocalDate(), 
+							rs.getDate("dateFinEncheres").toLocalDate(), 
+							rs.getInt("prixInitial"), 
+							rs.getInt("prixVente"), 
+							rs.getBoolean("etatVente"), 
+							rs.getInt("noUtilisateur"), 
+							rs.getInt("noCategorie"));
+					
+					listeArticle.add(a1);
+				} while (rs.next());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listeArticle;
+	}
 	
-	
-
-	
+	public List<ArticleVendu> selectArticleParNoCat (int noCat) {
+		
+		Connection cnx = null;
+		ArticleVendu a1 = null;
+		List<ArticleVendu> listeArticle = new ArrayList<>();
+		
+		try {
+			cnx = JdbcTools.getConnection();
+			cnx.setAutoCommit(false);
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_ARTICLES_NO_CAT);
+			rqt.setInt(1, noCat);
+			ResultSet rs = rqt.executeQuery();
+			
+			if (rs.next()) {
+				do {
+					a1 = new ArticleVendu(
+							rs.getInt("noArticle"), 
+							rs.getString("nomArticle"), 
+							rs.getString("description"), 
+							rs.getDate("dateDebutEncheres").toLocalDate(), 
+							rs.getDate("dateFinEncheres").toLocalDate(), 
+							rs.getInt("prixInitial"), 
+							rs.getInt("prixVente"), 
+							rs.getBoolean("etatVente"), 
+							rs.getInt("noUtilisateur"), 
+							rs.getInt("noCategorie"));
+							listeArticle.add(a1);
+				} while (rs.next());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listeArticle;
+	}
 
 }

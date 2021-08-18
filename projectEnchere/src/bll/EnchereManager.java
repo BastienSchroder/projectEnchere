@@ -84,4 +84,12 @@ public class EnchereManager {
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur){
 		return this.enchereDAO.selectEnchereRemporte(noUtilisateur);
 	}
+	
+	public List<ArticleVendu> rechercheNomArticle(String nomArticle){
+		return this.enchereDAO.rechercheNomArticle(nomArticle);
+	}
+	
+	public List<ArticleVendu> selectArticleParNoCat(int noCat) {
+		return this.enchereDAO.selectArticleParNoCat(noCat);
+	}
 }
