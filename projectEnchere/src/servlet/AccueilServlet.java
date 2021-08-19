@@ -73,7 +73,7 @@ public class AccueilServlet extends HttpServlet {
 		//Encheres ouvertes
 		if(request.getAttribute("filtreEncheresOuvertes") != null) {
 			for(ArticleVendu article : listeArticles) {
-				if(article.getDateFinEncheres().isAfter(LocalDate.now())) {
+				if(article.getDateFinEncheres().isAfter(LocalDate.now()) && article.getDateDebutEncheres().isBefore(LocalDate.now()) ) {
 					listeArticlesFiltre.add(article);
 				}
 			}
@@ -185,6 +185,7 @@ public class AccueilServlet extends HttpServlet {
 			
 			if(filtreMesEncheresEnCours != null) {
 				listeEnchere = mgr.selectEnchereEnCours(noUtilisateur);
+				System.out.println(listeEnchere);
 				request.setAttribute("listeMesEncheresEnCours", listeEnchere);
 			}
 			
