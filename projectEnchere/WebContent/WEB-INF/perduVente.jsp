@@ -48,7 +48,10 @@ Utilisateur dernierEncherisseur = (Utilisateur) request.getAttribute("dernierEnc
 						<p class="mb-3"><b>Vendeur : </b>
 						<%= utilisateur.getPseudo() %> </p>					
 						<input type="hidden" name="credit" value="<%= utilisateur.getCredit() %>">
-						<label>Crédits : <%= utilisateur.getCredit() %></label>				
+						<label>Crédits : <%= utilisateur.getCredit() %></label>
+						<div>
+						<div id="gifPerdu" class="tenor-gif-embed" data-postid="17224126" data-share-method="host" data-aspect-ratio="1.61616" data-width="100%"><a href="https://tenor.com/view/gandalf-old-man-naked-take-robe-off-funny-gif-17224126">Gandalf Old Man GIF</a>from <a href="https://tenor.com/search/gandalf-gifs">Gandalf GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+						</div>				
 			</div>
 		</div>
 	</div>	

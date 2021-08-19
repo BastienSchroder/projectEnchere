@@ -49,12 +49,12 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String DELETE_CATEGORIE = "DELETE FROM CATEGORIES WHERE noCategorie = ?";
 	private static final String INSERT_CATEGORIE = "INSERT INTO CATEGORIES (libelle) values(?)";
     private static final String SELECT_ENCHERE_REMPORTE = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle  INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateFinEncheres,GETDATE()) >= 0";
-    private static final String SELECT_ENCHERE_EN_COURS = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateDebutEncheres,GETDATE()) <= 0";
+    private static final String SELECT_ENCHERE_EN_COURS = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateDebutEncheres,GETDATE()) >= 0";
     private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nomArticle=?, description=?, dateFinEncheres=?, prixInitial=?, prixVente=? ,noCategorie=? WHERE noArticle=?;";
     private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue=?, codePostal=?, ville=? WHERE noArticle=?;";
     private static final String UPDATE_ETAT_VENTE = "UPDATE ARTICLES_VENDUS SET etatVEnte=0 WHERE noArticle=?;";
     private static final String RECHERCHE_NOM_ARTICLE= "SELECT * FROM ARTICLES_VENDUS WHERE UPPER(nomArticle) = UPPER(?)";
-    private static final String SELECT_ARTICLES_NO_CAT = "SELECT * FROM ARTICLES_VENDUS WHERE noCategorie = ?";
+    private static final String SELECT_ARTICLES_NO_CAT = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE noCategorie = ?";
 	
     @Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
@@ -696,7 +696,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 								rs.getInt("noUtilisateur"), 
 								rs.getInt("noCategorie"),
 								rs.getString("pseudo"));
-						
 						listeEnchere.add(article);
 					}while(rs.next());
 			}
@@ -773,7 +772,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 							rs.getInt("prixVente"), 
 							rs.getBoolean("etatVente"), 
 							rs.getInt("noUtilisateur"), 
-							rs.getInt("noCategorie"));
+							rs.getInt("noCategorie"),
+							rs.getString("pseudo"));
 							listeArticle.add(a1);
 				} while (rs.next());
 			}

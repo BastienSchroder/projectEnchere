@@ -50,7 +50,7 @@ public class AccueilServlet extends HttpServlet {
 		List<ArticleVendu> listeArticles = new ArrayList<>();
 		List<ArticleVendu> listeArticlesFiltre = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
-		
+
 		List<ArticleVendu> attribut = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
 		if (attribut != null && !attribut.isEmpty()) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
@@ -73,7 +73,7 @@ public class AccueilServlet extends HttpServlet {
 		//Encheres ouvertes
 		if(request.getAttribute("filtreEncheresOuvertes") != null) {
 			for(ArticleVendu article : listeArticles) {
-				if(article.getDateFinEncheres().isAfter(LocalDate.now())) {
+				if(article.getDateFinEncheres().isAfter(LocalDate.now()) && article.getDateDebutEncheres().isBefore(LocalDate.now()) ) {
 					listeArticlesFiltre.add(article);
 				}
 			}
@@ -135,13 +135,19 @@ public class AccueilServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-
 		ArrayList<ArticleVendu> listeEnchere = null;
 		EnchereManager mgr = new EnchereManager();
 		String nomArticleRecherche = request.getParameter("nomArticleRechercher");
 		int formSelect = -1;
 		ArrayList<ArticleVendu> listeEnchereRemporte = null;
-		
+		if(request.getParameter("jokeConnecte") != null) {
+			request.setAttribute("joke",request.getParameter("jokeConnecte"));
+			request.setAttribute("answer",request.getParameter("answerConnecte") );
+		}else {
+			request.setAttribute("joke",request.getParameter("joke"));
+			request.setAttribute("answer",request.getParameter("answer") );
+		}
+
 		if (nomArticleRecherche != null) {
 			List<ArticleVendu> listeArticle = mgr.rechercheNomArticle(nomArticleRecherche);
 			request.setAttribute("nomArticleRecherche", nomArticleRecherche);
@@ -149,8 +155,10 @@ public class AccueilServlet extends HttpServlet {
 		}
 		if (request.getParameter("selectNumCat") != null) {
 			formSelect = Integer.valueOf(request.getParameter("selectNumCat"));
-			List<ArticleVendu> listeArticleCat = (List<ArticleVendu>) mgr.selectArticleParNoCat(formSelect);
-			request.setAttribute("listeArticleRetourner", listeArticleCat);
+			if(formSelect > 0) {
+				List<ArticleVendu> listeArticleCat = (List<ArticleVendu>) mgr.selectArticleParNoCat(formSelect);
+				request.setAttribute("listeArticleRetourner", listeArticleCat);
+			}
 		}
 		
 		if (session.getAttribute("noUtilisateur") != null) {
@@ -177,6 +185,7 @@ public class AccueilServlet extends HttpServlet {
 			
 			if(filtreMesEncheresEnCours != null) {
 				listeEnchere = mgr.selectEnchereEnCours(noUtilisateur);
+				System.out.println(listeEnchere);
 				request.setAttribute("listeMesEncheresEnCours", listeEnchere);
 			}
 			

@@ -32,6 +32,7 @@ public class DeconnexionServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		session.setAttribute("noUtilisateur", null);
+		session.setAttribute("isAdmin", false);
 		RequestDispatcher rd = request.getRequestDispatcher("accueil");
 		if (rd != null) {
 			rd.forward(request, response);

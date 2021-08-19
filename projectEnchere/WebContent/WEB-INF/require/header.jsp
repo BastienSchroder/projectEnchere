@@ -1,9 +1,13 @@
+<%@page import="bo.Utilisateur"%>
 <nav class="navbar navbar-light bg-light header">
   <div class="container-fluid">
     <div class="col-3"><a href="<%= request.getContextPath()%>/accueil"><img class="logo-page"
      src="./vendor/img/logo.png"
      alt="Le logo de la hess" ></a>
 	</div>
+	<span><%= (request.getAttribute("joke") != null) ? request.getAttribute("joke") : "" %></span>
+	<span><%= (request.getAttribute("answer") != null) ? request.getAttribute("answer") : "" %></span>
+	<span></span>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -37,6 +41,12 @@
             <a class="nav-link active" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
           </li>     	  
           <% } %>
+        <%       
+          if((Boolean) session.getAttribute("isAdmin") && session.getAttribute("isAdmin") != null) {  %> 
+          <li class="nav-item">
+            <a class="nav-link active" tabindex="-1" href="<%= request.getContextPath()%>/admin">ADMIN</a>
+          </li>
+          <% }%>
           
         </ul>
       </div>

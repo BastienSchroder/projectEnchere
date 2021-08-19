@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import bll.EnchereManager;
 import bo.Utilisateur;
+import ch.qos.logback.core.subst.Token.Type;
 
 /**
  * Servlet implementation class ConnexionServlet
@@ -65,6 +66,7 @@ public class ConnexionServlet extends HttpServlet {
 		}
 		if(u1 != null) {
 			session.setAttribute("noUtilisateur", u1.getNoUtilisateur());
+			session.setAttribute("isAdmin", u1.isAdministrateur());
 			session.setMaxInactiveInterval(60*30);
 			response.sendRedirect("accueil");
 		}else {
