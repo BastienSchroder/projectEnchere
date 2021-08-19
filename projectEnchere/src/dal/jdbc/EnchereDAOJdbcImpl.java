@@ -1,5 +1,4 @@
 package dal.jdbc;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -9,23 +8,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-//import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.sql.Timestamp;
 import ch.qos.logback.classic.Logger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
 import bo.ArticleVendu;
 import bo.Categorie;
 import bo.Enchere;
 import bo.Retrait;
-
 import java.sql.Statement;
-
 import java.util.List;
-
 import bo.Utilisateur;
 import dal.EnchereDAO;
 
@@ -153,7 +147,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
                 rqt.executeUpdate();
                 cnx.commit();
                 loggerA.debug("--------------------------------------------------------------------");
-                loggerA.debug("Un point de retrait a été ajouté pour l'article : "+ rs.getInt("noArticle") + " a l'adresse" + retrait.getRue()+ " " +retrait.getVille()+" "+retrait.getCodePostal());
+                loggerA.debug("Un point de retrait a été ajouté pour l'article : "+ rs.getInt("noArticle") + " a l'adresse " + retrait.getRue()+ " " +retrait.getVille()+" "+retrait.getCodePostal());
                 loggerA.debug("L'endroit ou se trouve le bidule qui lui a couté si cher alors qu'il l'aurait eu a 2 euro sur ali express !");
                 
             }
@@ -181,7 +175,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
                 rqt.setInt(4, enchere.getMontantEnchere());
                 rqt.executeUpdate();
                 loggerA.debug("--------------------------------------------------------------------");
-                loggerA.debug("Une enchère sur l'article : "+ rs.getInt("noArticle") + " a été crée par "+ rs.getInt("noUtilisateur")+"avec un montant de" + enchere.getMontantEnchere());
+                loggerA.debug("Une enchère sur l'article : "+ rs.getInt("noArticle") + " a été crée par "+ rs.getInt("noUtilisateur")+" avec un montant de " + enchere.getMontantEnchere());
                 loggerA.debug("Aller encore plus haut, toujours plus de moulaga !");
                 
             }
@@ -507,7 +501,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			res = requete.executeUpdate();
 			cnx.close();
 			 loggerA.debug("--------------------------------------------------------------------");
-             loggerA.debug("Une enchère sur l'article : "+noArticle + " a été Mise à jours par "+ noUtilisateur+"avec un montant de" + montantEnchere);
+             loggerA.debug("Une enchère sur l'article : "+noArticle + " a été Mise à jours par "+ noUtilisateur+" avec un montant de " + montantEnchere);
              loggerA.debug("J'en connais un qui va se rincer pouloulou");
 
 			
@@ -612,7 +606,9 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 
 			rqt.executeUpdate();
 			cnx.close();
-			
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("L'article : "+article.getNomArticle()+ " vien d'etre modifié ");
+             loggerA.debug("Rien a ajouter.. ah si, réfléchit la prochaine fois, ça évitera de charger les requête sql !!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -630,7 +626,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			rqt.setInt(4, retrait.getNoArticle());
 			rqt.executeUpdate();
 			cnx.close();
-			
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("L'article : "+retrait.getNoArticle()+ " Possède un nouveau point de retrait ");
+             loggerA.debug("Ah bah bravo ça déménage pendant l'enchère, tu nous facilite pas la vie Maurice");
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -645,6 +644,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			rqt.setInt(1, noArticle);
 			rqt.executeUpdate();
 			cnx.close();
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("L'article : "+noArticle+ " a été supprimé ");
+             loggerA.debug("ça c'est fait");
+	
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -660,7 +663,9 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			requete.setInt(1, noArticle);
 			requete.executeUpdate();
 			cnx.close();
-			
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("L'état de la vente : "+noArticle+ " a été mis à jours ");
+             loggerA.debug("Ca avance ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -701,9 +706,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		return listeEnchere;
 	}
 	
-	
-	
-	
+
 	
 	
 	@Override

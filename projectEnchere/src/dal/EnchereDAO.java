@@ -25,9 +25,12 @@ public interface EnchereDAO {
 	public Retrait selectRetraitNo(int noArticle);
 	public int updateEnchere(int noArticle,int noUtilisateur, int montantEnchere);
 	public void updateUtilisateurCredit(int noUtilisateur,int montant);
+
 	public ArrayList<Utilisateur> selectAllUtilisateur();
 	public void deleteCategorie(int noCategorie);
 	public void insertCategorie(Categorie categ);
+
+
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur);
 	public void modifEnchereArticle(ArticleVendu article);
 	public void modifEnchereRetrait(Retrait retrait);

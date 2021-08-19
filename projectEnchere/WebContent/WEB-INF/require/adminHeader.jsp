@@ -6,7 +6,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="admin" class="nav-link active" aria-current="page">
+        <a href="admin" class="nav-link text-white" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="admin"/></svg>
           Liste des utilisateurs
         </a>
@@ -18,8 +18,8 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+        <a href="logservlet" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="logservlet"/></svg>
           Gestion des logs
         </a>
       </li>
@@ -30,5 +30,6 @@
         </a>
       </li>
     </ul>
+    
     <hr>
   </div>
