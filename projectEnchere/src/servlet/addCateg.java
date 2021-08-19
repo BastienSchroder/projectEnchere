@@ -8,19 +8,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import bll.EnchereManager;
+import bo.Categorie;
+import bo.Retrait;
 
 /**
- * Servlet implementation class DeconnexionServlet
+ * Servlet implementation class addCateg
  */
-@WebServlet("/deconnexion")
-public class DeconnexionServlet extends HttpServlet {
+@WebServlet("/addcateg")
+public class addCateg extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeconnexionServlet() {
+    public addCateg() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,12 +32,8 @@ public class DeconnexionServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		session.setAttribute("noUtilisateur", null);
-		session.setAttribute("isAdmin", false);
-		RequestDispatcher rd = request.getRequestDispatcher("accueil");
-		if (rd != null) {
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/admin/addCateg.jsp");
+		if (rd!=null) {
 			rd.forward(request, response);
 		}
 	}
@@ -44,7 +43,15 @@ public class DeconnexionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		//request.getParameter("categToDel")
+		EnchereManager mgr = new EnchereManager();
+		Categorie categ = new Categorie(
+				request.getParameter("libelle")
+							
+		);
+		System.out.println("dfgsdfgsdfgsdfg"+request.getParameter("libelle"));
+		mgr.insertCategorie(categ);
+		doGet(request, response);
 	}
 
 }

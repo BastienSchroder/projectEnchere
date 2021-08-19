@@ -1,13 +1,18 @@
 package dal.jdbc;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+//import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.Timestamp;
+import ch.qos.logback.classic.Logger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,7 +30,7 @@ import bo.Utilisateur;
 import dal.EnchereDAO;
 
 public class EnchereDAOJdbcImpl implements EnchereDAO {
-	
+	private static Logger loggerA = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("dal.jdbc.EnchereDAOJdbcImpl");
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur) values(?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String SELECT_VAL_UNIQUE = "SELECT * FROM UTILISATEURS WHERE pseudo = ? AND email = ?";
 	private static final String SELECT_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE noUtilisateur=?";
@@ -45,6 +50,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET pseudo=?, nom=?, prenom=?, email=?, telephone=? ,rue=?, codePostal=?, ville=?, motDePasse=?, credit=?, administrateur=? WHERE noUtilisateur=?";
     private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montantEnchere=?, noUtilisateur=? WHERE montantEnchere < ? AND noArticle=?";
     private static final String UPDATE_UTILISATEUR_CREDIT = "UPDATE UTILISATEURS SET credit=credit-? WHERE  noUtilisateur=? AND credit-?>=0";
+    private static final String SELECT_ALL_USER = "SELECT * FROM UTILISATEURS";
+	private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES_VENDUS WHERE noArticle = ?";
+	private static final String DELETE_CATEGORIE = "DELETE FROM CATEGORIES WHERE noCategorie = ?";
+	private static final String INSERT_CATEGORIE = "INSERT INTO CATEGORIES (libelle) values(?)";
     private static final String SELECT_ENCHERE_REMPORTE = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle  INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateFinEncheres,GETDATE()) >= 0";
     private static final String SELECT_ENCHERE_EN_COURS = "SELECT * FROM ENCHERES INNER JOIN ARTICLES_VENDUS ON ARTICLES_VENDUS.noArticle = ENCHERES.noArticle INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE ENCHERES.noUtilisateur = ? AND DATEDIFF(day,ARTICLES_VENDUS.dateDebutEncheres,GETDATE()) <= 0";
     private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nomArticle=?, description=?, dateFinEncheres=?, prixInitial=?, prixVente=? ,noCategorie=? WHERE noArticle=?;";
@@ -84,6 +93,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				rqt.setBoolean(11, utilisateur.isAdministrateur());
 				rqt.executeUpdate();
 				cnx.commit();
+				 loggerA.debug("--------------------------------------------------------------------");
+	             loggerA.debug("Utilisateur ajouté : Pseudo="+ utilisateur.getPseudo()+", Nom="+utilisateur.getNom()+", Prenom="+utilisateur.getPrenom()+", email="+utilisateur.getEmail()+", Tel="+utilisateur.getTelephone());
+	             loggerA.debug("Yo la sang, Bienvenue parmis nous !");
+	             
 			}
 			
 		} catch (Exception e) {
@@ -111,6 +124,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			rqt.setInt(8,article.getNoCategorie());
 			rqt.executeUpdate();
 			cnx.commit();
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug(article.getNomArticle()+" a été mis aux enchère par "+article.getNoUtilisateur()+", elle débute le "+datestart+" et fini le "+datefin+ " au prix initial de "+article.getPrixInitiale()+", il appartient à la catégorie "+article.getNoCategorie());
+             loggerA.debug("Bon bah on va encore brasser de l'argent !");
+             
 			
 			cnx.close();
 		} catch (Exception e) {
@@ -135,6 +152,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
                 rqt.setString(4, retrait.getVille());
                 rqt.executeUpdate();
                 cnx.commit();
+                loggerA.debug("--------------------------------------------------------------------");
+                loggerA.debug("Un point de retrait a été ajouté pour l'article : "+ rs.getInt("noArticle") + " a l'adresse" + retrait.getRue()+ " " +retrait.getVille()+" "+retrait.getCodePostal());
+                loggerA.debug("L'endroit ou se trouve le bidule qui lui a couté si cher alors qu'il l'aurait eu a 2 euro sur ali express !");
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,7 +180,31 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
                 rqt.setDate(3, date);
                 rqt.setInt(4, enchere.getMontantEnchere());
                 rqt.executeUpdate();
+                loggerA.debug("--------------------------------------------------------------------");
+                loggerA.debug("Une enchère sur l'article : "+ rs.getInt("noArticle") + " a été crée par "+ rs.getInt("noUtilisateur")+"avec un montant de" + enchere.getMontantEnchere());
+                loggerA.debug("Aller encore plus haut, toujours plus de moulaga !");
+                
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+	}
+	@Override
+	public void insertCategorie(Categorie categ) {
+		Connection cnx = null;
+        PreparedStatement rqt = null;
+        try {
+        	System.out.println("categ" +categ);
+        		cnx = JdbcTools.getConnection();
+                rqt = cnx.prepareStatement(INSERT_CATEGORIE, PreparedStatement.RETURN_GENERATED_KEYS);
+                rqt.setString(1, categ.getLibelle());
+                rqt.executeUpdate();
+             
+                loggerA.debug("--------------------------------------------------------------------");
+                loggerA.debug("insertion de "+categ.getLibelle()+" dans la table Catégorie, le gars est pas trop relou à rajouter des catégories tout le temps");
+                loggerA.debug("Toujour plus..");
+                
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -258,10 +303,33 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			rqt.setInt(1, noUtilisateur);
 			rqt.executeUpdate();
 			cnx.close();
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("L'utilisateur " + noUtilisateur+" a été supprimé");
+             loggerA.debug("Welcome to goulag");
+           
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
+	
+	@Override
+	public void deleteCategorie(int noCategorie) {
+		// TODO Auto-generated method stub
+		Connection cnx = null;
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(DELETE_CATEGORIE);
+			rqt.setInt(1, noCategorie);
+			rqt.executeUpdate();
+			cnx.close();
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("La catégorie " + noCategorie+" a été supprimé");
+             loggerA.debug("C'est radicale..");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
 
 	@Override
 	public List<ArticleVendu> selectArticles() {
@@ -413,7 +481,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			requete.executeUpdate();
 			cnx.commit();
 			cnx.close();
-			
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("Utilisateur Mis à jours : Pseudo="+ utilisateur.getPseudo()+", Nom="+utilisateur.getNom()+", Prenom="+utilisateur.getPrenom()+", email="+utilisateur.getEmail()+", Tel="+utilisateur.getTelephone());
+             loggerA.debug("Va falloir faire des effort la !");
+             
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -435,6 +506,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			requete.setInt(4, noArticle);
 			res = requete.executeUpdate();
 			cnx.close();
+			 loggerA.debug("--------------------------------------------------------------------");
+             loggerA.debug("Une enchère sur l'article : "+noArticle + " a été Mise à jours par "+ noUtilisateur+"avec un montant de" + montantEnchere);
+             loggerA.debug("J'en connais un qui va se rincer pouloulou");
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -459,6 +534,33 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		}
 		
 	}
+
+	@Override
+	public ArrayList<Utilisateur> selectAllUtilisateur() {
+		Connection cnx = null;
+		Utilisateur user = null;
+		ArrayList<Utilisateur> UtilisateurArray = new ArrayList<Utilisateur>();
+		try {
+			cnx = JdbcTools.getConnection();
+			PreparedStatement rqt = cnx.prepareStatement(SELECT_ALL_USER);
+			//rqt.setInt(1, );
+			ResultSet rs = rqt.executeQuery();
+			int d=0;
+			if (rs.next()) {
+				do{
+					d++;
+					user = new Utilisateur(rs.getInt("noUtilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"));
+					UtilisateurArray.add(user);	
+				}while(rs.next());
+				
+		
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return UtilisateurArray;
+	}
+
 
 	@Override
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur) {
@@ -598,11 +700,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		}
 		return listeEnchere;
 	}
-	
-	
-	
-	
-	
 	
 	
 	

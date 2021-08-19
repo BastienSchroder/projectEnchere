@@ -21,10 +21,13 @@ public interface EnchereDAO {
 	public void updateUtilisateur(Utilisateur utilisateur);
 	public Enchere selectDetailEnchere(int noArticle);
 	public ArticleVendu selectArticleNo(int noArticle);
-	public Categorie selectCategorieNo(int noCategorie);
+	public Categorie selectCategorieNo(int noCategorie); 
 	public Retrait selectRetraitNo(int noArticle);
 	public int updateEnchere(int noArticle,int noUtilisateur, int montantEnchere);
 	public void updateUtilisateurCredit(int noUtilisateur,int montant);
+	public ArrayList<Utilisateur> selectAllUtilisateur();
+	public void deleteCategorie(int noCategorie);
+	public void insertCategorie(Categorie categ);
 	public ArrayList<ArticleVendu> selectEnchereRemporte(int noUtilisateur);
 	public void modifEnchereArticle(ArticleVendu article);
 	public void modifEnchereRetrait(Retrait retrait);
@@ -33,4 +36,5 @@ public interface EnchereDAO {
 	ArrayList<ArticleVendu> selectEnchereUtilisateur(int noUtilisateur);
 	public List<ArticleVendu> rechercheNomArticle(String nomArticle);
 	public List<ArticleVendu> selectArticleParNoCat (int noCat);
+
 }

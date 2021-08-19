@@ -49,6 +49,15 @@ public class Utilisateur {
 		this.administrateur = administrateur;
 	}
 
+	
+
+	public Utilisateur(int noUtilisateur, String pseudo, String nom, String prenom) {
+		super();
+		this.noUtilisateur = noUtilisateur;
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
 
 
 	public int getNoUtilisateur() {

@@ -12,9 +12,11 @@
 <head>
 <title>ENI-EnchÃ¨re</title>
  <%@include file="require/head.jsp" %>
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-
+<div class="testtt">
  <%@include file="require/header.jsp" %>
  <%ArrayList<Categorie> cl = (ArrayList<Categorie>)request.getAttribute("Categorie"); %>
 <div class="row body">
@@ -43,7 +45,6 @@
 			  		<%for (int i = 0; i < cl.size(); i++) {
 			  		    Categorie categ = cl.get(i);
 			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
-
 			  		}%> 
 				</select>
 			</div>
@@ -113,7 +114,9 @@
 		 <input type="hidden" name="jokeConnecte" value="" class="joke">
 		 <input type="hidden" name="answerConnecte" value="" class="answer">
 		</form>
-		<div class="row mt-5">
+		
+		<% if(session.getAttribute("noUtilisateur") != null) { %>
+			<div class="row mt-5">
 		<%
 		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
 		for(ArticleVendu article : listeArticles){
@@ -142,10 +145,50 @@
 			}
 	%>
 	</div>
+			<% } else { %>
+				<div class="row mt-5">
+		<%
+		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
+		for(ArticleVendu article : listeArticles){
+		%>
+		<input type="hidden" name="dateFinEnchere" value="<%= article.getDateFinEncheres()%>">
+		
+            <div class="card mb-3 single-enchere" style="max-width: 540px;">
+            
+              <div class="row no-gutters">
+	                <div class="col-md-4">
+	                  <img src="./vendor/img/auction.png" class="card-img" alt="...">
+	                </div>
+	                	<div class="col-md-8">
+		                  <div class="card-body">
+		                    <h5 class="card-title"><%= article.getNomArticle() %></h5>
+		                    <p class="card-text">Prix : <%= article.getPrixInitiale()%></p>
+		                    <p class="card-text">Fin de l'enchère : <%= article.getDateFinEncheres()%></p> 
+		                    <p class="card-text"><small class="text-muted"><%= article.getPseudo()%></small></p>
+		                  </div>
+	              	  </div>
+               </div>
+            </div>
+        
+           	<%
+			
+			}
+	%>
+	</div>
+			
+			<% } %>
+		
+		
+		
     </div>
-
+    
+<button id="pouf" class="pouf">Run Effect</button>
+<button id="pif" class="pif">Run Effect</button>
+<button id="paf" class="paf">Run Effect</button>
+</div>
 </div>
 <script>
+
 $( "#ventes" ).on( "click", function() {
 	 if($('#ventes').is(':checked')){
 		 $("#sellInProgress").removeAttr('disabled');
@@ -170,7 +213,26 @@ $( "#achat" ).on( "click", function() {
 		
 	 }
 	});
-	
+
+
+$( function() {
+    $( "#pouf" ).on( "click", function() {
+    	 $( ".testtt" ).toggle( "fade", 500 );
+    });
+    $( "#paf" ).on( "click", function() {
+    	setInterval(function() {
+    		 $( ".testtt" ).effect( "shake", 300 );
+    	}, 70);
+   	
+   });
+    
+    $( "#pif" ).on( "click", function() {
+    	$( ".testtt" ).toggle( "explode",2000 );
+    	
+   	
+   });
+} );
+
 </script>
 <script type="text/javascript" src="js/blagues.js"></script>
 <script type="text/javascript" src="js/script.js"></script>

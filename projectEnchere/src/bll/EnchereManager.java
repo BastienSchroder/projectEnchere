@@ -33,12 +33,21 @@ public class EnchereManager {
 		return this.enchereDAO.selectUtilisateur(noUtilisateur);
 	}
 
+	public ArrayList<Utilisateur> selectAllUtilisateur(){
+		return this.enchereDAO.selectAllUtilisateur();
+		
+	}
+
 	public ArrayList<Categorie> selectCategorie(){
 		return this.enchereDAO.selectCategorie();
 		
 	}
-
-
+	public void insertCategorie(Categorie categ) {
+		this.enchereDAO.insertCategorie(categ);
+	}
+	public void deleteCategorie(int noCategorie) {
+		this.enchereDAO.deleteCategorie(noCategorie);
+	}
 	public Utilisateur selectConnexion(String identifiant, String mdp) {
 		return this.enchereDAO.selectConnexion(identifiant, mdp);
 	}

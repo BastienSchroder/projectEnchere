@@ -86,6 +86,9 @@ public class NewVente extends HttpServlet {
 				request.getParameter("ville")			
 		);
 		mgr.insertRetrait(retrait);
+
+		
+
 		
 		Enchere enchere = new Enchere(
 				datestart,
@@ -93,7 +96,9 @@ public class NewVente extends HttpServlet {
 				);
 		mgr.insertEnchere(enchere);
 		
+
 		response.sendRedirect("accueil");
+
 
 		
 	}
