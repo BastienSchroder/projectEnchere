@@ -50,7 +50,6 @@ public class AccueilServlet extends HttpServlet {
 		List<ArticleVendu> listeArticles = new ArrayList<>();
 		List<ArticleVendu> listeArticlesFiltre = new ArrayList<>();
 		listeArticles = mgr.selectArticles();
-		System.out.println(listeArticles);
 
 		List<ArticleVendu> attribut = (List<ArticleVendu>) request.getAttribute("listeArticleRechercher");
 		if (attribut != null && !attribut.isEmpty()) {
@@ -58,7 +57,6 @@ public class AccueilServlet extends HttpServlet {
 		}else if(request.getAttribute("listeEnchereRemporte") != null) {
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeEnchereRemporte");
 		} else if (request.getAttribute("listeArticleRetourner") != null) {
-			System.out.println("ici");
 			listeArticles = (List<ArticleVendu>) request.getAttribute("listeArticleRetourner");
 		}
 
@@ -137,13 +135,19 @@ public class AccueilServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-
 		ArrayList<ArticleVendu> listeEnchere = null;
 		EnchereManager mgr = new EnchereManager();
 		String nomArticleRecherche = request.getParameter("nomArticleRechercher");
 		int formSelect = -1;
 		ArrayList<ArticleVendu> listeEnchereRemporte = null;
-		
+		if(request.getParameter("jokeConnecte") != null) {
+			request.setAttribute("joke",request.getParameter("jokeConnecte"));
+			request.setAttribute("answer",request.getParameter("answerConnecte") );
+		}else {
+			request.setAttribute("joke",request.getParameter("joke"));
+			request.setAttribute("answer",request.getParameter("answer") );
+		}
+
 		if (nomArticleRecherche != null) {
 			List<ArticleVendu> listeArticle = mgr.rechercheNomArticle(nomArticleRecherche);
 			request.setAttribute("nomArticleRecherche", nomArticleRecherche);

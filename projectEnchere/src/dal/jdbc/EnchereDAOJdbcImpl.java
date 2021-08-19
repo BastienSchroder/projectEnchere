@@ -51,7 +51,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
     private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue=?, codePostal=?, ville=? WHERE noArticle=?;";
     private static final String UPDATE_ETAT_VENTE = "UPDATE ARTICLES_VENDUS SET etatVEnte=0 WHERE noArticle=?;";
     private static final String RECHERCHE_NOM_ARTICLE= "SELECT * FROM ARTICLES_VENDUS WHERE UPPER(nomArticle) = UPPER(?)";
-    private static final String SELECT_ARTICLES_NO_CAT = "SELECT * FROM ARTICLES_VENDUS WHERE noCategorie = ?";
+    private static final String SELECT_ARTICLES_NO_CAT = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.noUtilisateur = UTILISATEURS.noUtilisateur WHERE noCategorie = ?";
 	
     @Override
 	public int insertUtilisateur(Utilisateur utilisateur) {
@@ -673,7 +673,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 							rs.getInt("prixVente"), 
 							rs.getBoolean("etatVente"), 
 							rs.getInt("noUtilisateur"), 
-							rs.getInt("noCategorie"));
+							rs.getInt("noCategorie"),
+							rs.getString("pseudo"));
 							listeArticle.add(a1);
 				} while (rs.next());
 			}

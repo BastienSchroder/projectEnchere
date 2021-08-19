@@ -4,6 +4,9 @@
      src="./vendor/img/logo.png"
      alt="Le logo de la hess" ></a>
 	</div>
+	<span><%= (request.getAttribute("joke") != null) ? request.getAttribute("joke") : "" %></span>
+	<span><%= (request.getAttribute("answer") != null) ? request.getAttribute("answer") : "" %></span>
+	<span></span>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>

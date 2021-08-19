@@ -1,6 +1,6 @@
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
 <%@page import="bo.Categorie"%>
 <%@page import="java.util.Iterator"%>
@@ -10,8 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>ENI-Enchère</title>
+<title>ENI-EnchÃ¨re</title>
  <%@include file="require/head.jsp" %>
 </head>
 <body>
@@ -19,25 +18,28 @@
  <%@include file="require/header.jsp" %>
  <%ArrayList<Categorie> cl = (ArrayList<Categorie>)request.getAttribute("Categorie"); %>
 <div class="row body">
-	<h2 class="text-center list-title h1">Liste des enchères</h2>
+	<h2 class="text-center list-title h1">Liste des enchÃ¨res</h2>
 	<div class=" row box-shadow margin-div">
 	
 		<div class="row">
 			<h2>Filtres : </h2>
 			<form class="d-flex col-6 col-sm-3 " action="<%= request.getContextPath()%>/accueil" method="POST">
-			      <input class="form-control me-2" type="text" placeholder="Mot clé" aria-label="Search" name="nomArticleRechercher">
-			      <button class="btn btn-outline-success" type="submit">Rechercher</button>
+				  <input type="hidden" name="joke" class="joke" >
+				  <input type="hidden" name="answer" class="answer">
+			      <input class="form-control me-2" type="text" placeholder="Mot clÃ©" aria-label="Search" name="nomArticleRechercher">
+			      <button id="btnBlague" class="btn btn-outline-success" type="submit">Rechercher</button>
 			</form>
 		</div>
 		<br/>
 		<form action="<%= request.getContextPath()%>/accueil" method="POST">
+		
 		<div class="row  mt-3">
 			<div class="col-6 col-sm-1">
-				<p>Catégorie </p>
+				<p>CatÃ©gorie </p>
 			</div>
 			<div class="col-6 col-sm-3">
 				<select class="form-select" aria-label="Default select example" name="selectNumCat">
-			  		<option selected value=0>-- Catégorie --</option>
+			  		<option selected value=0>-- CatÃ©gorie --</option>
 			  		<%for (int i = 0; i < cl.size(); i++) {
 			  		    Categorie categ = cl.get(i);
 			  		  %><option value="<%= categ.getNoCategorie()%>"><%= categ.getLibelle()%></option><%
@@ -60,19 +62,19 @@
 				<div class="form-check margin-check">
 					  <input name="filtreEncheresOuvertes" class="form-check-input" type="checkbox" value="bidOpen" id="bidOpen" disabled>
 					  <label class="form-check-label" for="bidOpen" >
-					    Enchères ouvertes
+					    EnchÃ¨res ouvertes
 					  </label>
 				</div>
 				<div class="form-check margin-check">	  
 					  <input name="filtreMesEncheresEnCours" class="form-check-input" type="checkbox" value="bidInProgress" id="bidInProgress" disabled>
 					  <label class="form-check-label" for="bidInProgress">
-					    Mes enchères en cours
+					    Mes enchÃ¨res en cours
 					  </label>
 				</div>
 				<div class="form-check margin-check">
 					  <input name="filtreEnchereRemporte" class="form-check-input" type="checkbox" value="bidWon" id="bidWon" disabled>
 					  <label class="form-check-label" for="bidWon">
-					    Mes enchères remportées
+					    Mes enchÃ¨res remportÃ©es
 					  </label>
 				</div>
 			</div>
@@ -92,22 +94,24 @@
 				<div class="form-check margin-check">
 					  <input name="filtreMesVentesNonDebutees"  class="form-check-input" type="checkbox" value="sellNotStarted" id="sellNotStarted" disabled>
 					  <label class="form-check-label" for="sellNotStarted">
-					    Ventes non débutées
+					    Ventes non dÃ©butÃ©es
 					  </label>
 				</div>
 				<div class="form-check margin-check">
 					  <input name="filtreMesVentesTerminees"  class="form-check-input" type="checkbox" value="sellEnded" id="sellEnded" disabled>
 					  <label class="form-check-label" for="sellEnded">
-					    Ventes terminées
+					    Ventes terminÃ©es
 					  </label>
 				</div>
 				 <% } %>
 			</div>
 			<div class="col">
-			<input type="submit" class="btn btn-primary btn-lg " tabindex="-1" value="Rechercher" >
+			<input id="btnBlagueConnecte" type="submit" class="btn btn-primary btn-lg " tabindex="-1" value="Rechercher" >
 			</div>
 			
 		</div>
+		 <input type="hidden" name="jokeConnecte" value="" class="joke">
+		 <input type="hidden" name="answerConnecte" value="" class="answer">
 		</form>
 		<div class="row mt-5">
 		<%
@@ -126,7 +130,7 @@
 		                  <div class="card-body">
 		                    <h5 class="card-title"><%= article.getNomArticle() %></h5>
 		                    <p class="card-text">Prix : <%= article.getPrixInitiale()%></p>
-		                    <p class="card-text">Fin de l'enchère : <%= article.getDateFinEncheres()%></p> 
+		                    <p class="card-text">Fin de l'enchÃ¨re : <%= article.getDateFinEncheres()%></p> 
 		                    <p class="card-text"><small class="text-muted"><%= article.getPseudo()%></small></p>
 		                  </div>
 	              	  </div>
@@ -168,5 +172,7 @@ $( "#achat" ).on( "click", function() {
 	});
 	
 </script>
+<script type="text/javascript" src="js/blagues.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

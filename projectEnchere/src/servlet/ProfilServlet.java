@@ -55,7 +55,7 @@ public class ProfilServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EnchereManager mgr = new EnchereManager();
 		HttpSession session = request.getSession();
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("accueil");
 		int noUtilisateur = -1;
 
 		if(request.getParameter("supprimer") != null) {
