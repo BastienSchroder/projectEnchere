@@ -110,7 +110,9 @@
 			
 		</div>
 		</form>
-		<div class="row mt-5">
+		
+		<% if(session.getAttribute("noUtilisateur") != null) { %>
+			<div class="row mt-5">
 		<%
 		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
 		for(ArticleVendu article : listeArticles){
@@ -139,6 +141,41 @@
 			}
 	%>
 	</div>
+			<% } else { %>
+				<div class="row mt-5">
+		<%
+		List<ArticleVendu> listeArticles = (List<ArticleVendu>)request.getAttribute("listeArticles");		
+		for(ArticleVendu article : listeArticles){
+		%>
+		<input type="hidden" name="dateFinEnchere" value="<%= article.getDateFinEncheres()%>">
+		
+            <div class="card mb-3 single-enchere" style="max-width: 540px;">
+            
+              <div class="row no-gutters">
+	                <div class="col-md-4">
+	                  <img src="./vendor/img/auction.png" class="card-img" alt="...">
+	                </div>
+	                	<div class="col-md-8">
+		                  <div class="card-body">
+		                    <h5 class="card-title"><%= article.getNomArticle() %></h5>
+		                    <p class="card-text">Prix : <%= article.getPrixInitiale()%></p>
+		                    <p class="card-text">Fin de l'enchère : <%= article.getDateFinEncheres()%></p> 
+		                    <p class="card-text"><small class="text-muted"><%= article.getPseudo()%></small></p>
+		                  </div>
+	              	  </div>
+               </div>
+            </div>
+        
+           	<%
+			
+			}
+	%>
+	</div>
+			
+			<% } %>
+		
+		
+		
     </div>
     
 <button id="pouf" class="pouf">Run Effect</button>

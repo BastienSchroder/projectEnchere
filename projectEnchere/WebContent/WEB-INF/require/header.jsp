@@ -1,3 +1,4 @@
+<%@page import="bo.Utilisateur"%>
 <nav class="navbar navbar-light bg-light header">
   <div class="container-fluid">
     <div class="col-3"><a href="<%= request.getContextPath()%>/accueil"><img class="logo-page"
@@ -37,6 +38,12 @@
             <a class="nav-link active" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
           </li>     	  
           <% } %>
+          <%       
+          if((Boolean) session.getAttribute("isAdmin") && session.getAttribute("isAdmin") != null) {  %> 
+          <li class="nav-item">
+            <a class="nav-link active" tabindex="-1" href="<%= request.getContextPath()%>/admin">ADMIN</a>
+          </li>
+          <% }%>
           
         </ul>
       </div>
