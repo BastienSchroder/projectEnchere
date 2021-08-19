@@ -41,12 +41,7 @@
             <a class="nav-link active" tabindex="-1" href="<%= request.getContextPath()%>/deconnexion">Déconnexion</a>
           </li>     	  
           <% } %>
-        <%       
-          if((Boolean) session.getAttribute("isAdmin") && session.getAttribute("isAdmin") != null) {  %> 
-          <li class="nav-item">
-            <a class="nav-link active" tabindex="-1" href="<%= request.getContextPath()%>/admin">ADMIN</a>
-          </li>
-          <% }%>
+       
           
         </ul>
       </div>
